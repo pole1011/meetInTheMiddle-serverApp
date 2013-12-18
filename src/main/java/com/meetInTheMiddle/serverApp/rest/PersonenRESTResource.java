@@ -28,14 +28,14 @@ import javax.ws.rs.core.UriInfo;
 
 import com.meetInTheMiddle.serverApp.dao.PersonenDao;
 import com.meetInTheMiddle.serverApp.domain.Person;
+import com.meetInTheMiddle.serverApp.domain.PersonList;
 
 /**
  * Interface fuer dieRessource, die ueber eine URL erreichbar ist und 
  * auf welcher verschiedene Operationen durchgefuehrt werden koennen sollen.
  * 
- * @author Manuel Hennchen
  */
-@Path("/personen")
+@Path("/persons")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
 public class PersonenRESTResource {
@@ -62,9 +62,12 @@ public class PersonenRESTResource {
 	 * @return	Personliste
 	 */
 	@GET
-	public List<Person> findAllePersonen(@Context UriInfo uriInfo,
+	public PersonList findAllePersonen(@Context UriInfo uriInfo,
 			@QueryParam("name") @DefaultValue("") String name) {
-		return dao.selectAll();
+		
+		PersonList list = new PersonList();
+		list.setList(dao.selectAll());
+		return list;
 	}
 	
 	/**
