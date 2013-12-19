@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -15,7 +16,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import com.meetInTheMiddle.serverApp.domain.Person;
 import com.meetInTheMiddle.serverApp.util.Constants;
 
-public class PersonenDao {
+public class PersonDatabaseDao implements PersonDao {
 	
 	public class PersonMapper implements RowMapper<Person> {
 	     /*implement abstract method for declaring mapping
@@ -42,7 +43,7 @@ public class PersonenDao {
 	}
 	private JdbcTemplate jdbcTemplate;  
 	
-	public PersonenDao() {
+	public PersonDatabaseDao() {
 		try {
 			Class.forName(oracle.jdbc.driver.OracleDriver.class.getName());
 		} catch (ClassNotFoundException e) {
@@ -59,11 +60,16 @@ public class PersonenDao {
 		dataSource = source;
 	}
 	  
+	@Override
 	public List<Person> selectAll() {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return select.query("select * from PERSON", new PersonMapper());
+		
+		List<Person> list = select.query("select * from PERSON", new PersonMapper());
+		Logger.getGlobal().fine("PersonDao.selectAll(): " + list.size() + " Personen gefunden.");
+		return list;
 	}
-	  
+
+	@Override
 	public void create(String firstName, String lastName,Date birthday, String phone, String email,
 			String kontaktliste, String password, String interests) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
@@ -73,6 +79,7 @@ public class PersonenDao {
 						password, interests });
 	}
 
+	@Override
 	public List<Person> validate(String email, String password) {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
 		return select

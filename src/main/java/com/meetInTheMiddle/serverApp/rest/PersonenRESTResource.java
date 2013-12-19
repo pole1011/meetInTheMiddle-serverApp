@@ -26,7 +26,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import com.meetInTheMiddle.serverApp.dao.PersonenDao;
+import com.meetInTheMiddle.serverApp.dao.PersonDao;
+import com.meetInTheMiddle.serverApp.dao.PersonDatabaseDao;
+import com.meetInTheMiddle.serverApp.dao.PersonMockDao;
 import com.meetInTheMiddle.serverApp.domain.Person;
 import com.meetInTheMiddle.serverApp.domain.PersonList;
 
@@ -40,7 +42,7 @@ import com.meetInTheMiddle.serverApp.domain.PersonList;
 @Consumes
 public class PersonenRESTResource {
 	
-	private PersonenDao dao = new PersonenDao();
+	private PersonDao dao = new PersonDatabaseDao(); // TODO: Mocking abschalten mit = new PersonDatabaseDao() //new PersonMockDao(); 
 
 	/**
 	 * Mit der URL /person/{id} einen Person ermitteln
