@@ -71,6 +71,7 @@
 
 
 	</dependencies>
+
 	<build>
 		<finalName>serverApp</finalName>
 		<plugins>
@@ -89,9 +90,11 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<configuration>
-					<url>http://127.0.0.1:8080/manager</url>
+					<url>http://10.84.41.74:8080/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/serverApp</path>
+					<username>admin</username>
+					<password>admin</password>
 					<warFile>target/serverApp.war</warFile>
 				</configuration>
 			</plugin>

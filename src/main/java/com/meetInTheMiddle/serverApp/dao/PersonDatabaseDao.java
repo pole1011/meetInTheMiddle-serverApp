@@ -24,6 +24,7 @@ public class PersonDatabaseDao implements PersonDao {
 	     */
 	    public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
 	        Person person=new Person();
+	        person.setId(rs.getString("ID"));
 	        person.setFirstName(rs.getString("VORNAME"));
 	        person.setLastName(rs.getString("NACHNAME"));
 	        person.setBirthday(rs.getDate("GEBURTSDATUM"));
@@ -54,8 +55,8 @@ public class PersonDatabaseDao implements PersonDao {
 		DriverManagerDataSource source = new DriverManagerDataSource();
 		source.setDriverClassName(oracle.jdbc.driver.OracleDriver.class.getName());
 		source.setUrl(Constants.uri);
-		source.setUsername("eBW13Db02");
-		source.setPassword("eBW13Db");
+		source.setUsername(Constants.user);
+		source.setPassword(Constants.password);
 		
 		dataSource = source;
 	}
