@@ -1,10 +1,12 @@
 package com.meetInTheMiddle.serverApp.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name="person")
 public class Person {
 	public Person(String firstName, String lastName, Date birthday,
 			String phone, String email, int kontaktliste_fk, String password,
@@ -21,72 +23,93 @@ public class Person {
 	}
 	public Person() {
 	}
-
+@XmlElement
 private String id;
+@XmlElement(required=true)
 private String firstName;
+@XmlElement(required=true)
 private String lastName;
+@XmlElement
 private Date birthday;
+@XmlElement
 private String phone;
+@XmlElement(required = true)
 private String email;
+@XmlElement
 private int Wohnort_fk;
+@XmlElement
 private int privateinstellungen_fk;
+@XmlElement (required = true)
 private int Kontaktliste_fk = 1;
+@XmlElement(required=true)
 private String password;
+@XmlElement
 private String interests;
-public String getFirsName() {
+
+public String getFirstName() {
 	return firstName;
 }
 public void setFirstName(String firstName) {
 	this.firstName = firstName;
 }
+
 public String getLastName() {
 	return lastName;
 }
 public void setLastName(String lastName) {
 	this.lastName = lastName;
 }
+
 public Date getBirthday() {
 	return birthday;
 }
 public void setBirthday(Date birthday) {
 	this.birthday = birthday;
 }
+
 public String getPhone() {
 	return phone;
 }
 public void setPhone(String phone) {
 	this.phone = phone;
 }
+
 public String getEmail() {
 	return email;
 }
 public void setEmail(String email) {
 	this.email = email;
 }
+
 public int getWohnort_fk() {
 	return Wohnort_fk;
 }
+
 public void setWohnort_fk(int wohnort_fk) {
 	Wohnort_fk = wohnort_fk;
 }
+
 public int getPrivateinstellungen_fk() {
 	return privateinstellungen_fk;
 }
 public void setPrivateinstellungen_fk(int privateinstellungen_fk) {
 	this.privateinstellungen_fk = privateinstellungen_fk;
 }
+
 public int getKontaktliste_fk() {
 	return Kontaktliste_fk;
 }
 public void setKontaktliste_fk(int kontaktliste_fk) {
 	Kontaktliste_fk = kontaktliste_fk;
 }
+
 public String getPassword() {
 	return password;
 }
 public void setPassword(String password) {
 	this.password = password;
 }
+
 public String getInterests() {
 	return interests;
 }

@@ -39,6 +39,11 @@
 			<version>1.18</version>
 		</dependency>
 		<dependency>
+        <groupId>com.sun.jersey.contribs</groupId>
+        <artifactId>jersey-multipart</artifactId>
+        <version>1.18</version>
+    </dependency>
+		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc</artifactId>
 			<version>14</version>
@@ -106,6 +111,7 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</build>
 </project>

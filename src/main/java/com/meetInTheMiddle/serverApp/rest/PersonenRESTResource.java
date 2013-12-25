@@ -7,8 +7,12 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,13 +28,19 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+
+import sun.rmi.runtime.Log;
 
 import com.meetInTheMiddle.serverApp.dao.PersonDao;
 import com.meetInTheMiddle.serverApp.dao.PersonDatabaseDao;
 import com.meetInTheMiddle.serverApp.dao.PersonMockDao;
 import com.meetInTheMiddle.serverApp.domain.Person;
 import com.meetInTheMiddle.serverApp.domain.PersonList;
+import com.sun.jersey.api.NotFoundException;
 
 /**
  * Interface fuer dieRessource, die ueber eine URL erreichbar ist und 
@@ -41,24 +51,35 @@ import com.meetInTheMiddle.serverApp.domain.PersonList;
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
 public class PersonenRESTResource {
-	
+//	public Logger logger = new Logger(PersonenRESTResource.class.getName());
+	private Map<String, Person> persons = new HashMap<>();
 	private PersonDao dao = new PersonDatabaseDao(); // TODO: Mocking abschalten mit = new PersonDatabaseDao() //new PersonMockDao(); 
 
 	/**
-	 * Mit der URL /person/{id} einen Person ermitteln
-	 * @param id ID des Persons
+	 * Mit der URL /persons/{id} eine Person ermitteln
+	 * @param id ID der Persons
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
-	 * @return Objekt mit Persondaten, falls die ID vorhanden ist
+	 * @return Objekt mit Personendaten, falls die ID vorhanden ist
 	 */
 	@GET
-	@Path("{id:[0-9]+}")
+	@Path("{id:[1-9][0-9]*}")
+	@Produces(MediaType.APPLICATION_XML)
 	public Person findPersonById(@PathParam("id") Long id, 
 			@Context UriInfo uriInfo) {
-		return new Person("hans", "wurst", null, null, null, 0, null, null); // TODO
+		PersonList list = new PersonList();
+		list.setList(dao.findPersonById(id));
+		System.out.println("Vorname der Per ID gesuchten Person: " + list.getList().get(0).getFirstName());
+		if (list.getList().get(0) == null) {
+			final String msg = "KEINE_PERSON_GEFUNDEN_MIT_ID" + id;
+			throw new NotFoundException(msg);
+			}
+		return new Person(list.getList().get(0).getFirstName(), list.getList().get(0).getLastName(), 
+				list.getList().get(0).getBirthday(), list.getList().get(0).getPhone(), list.getList().get(0).getEmail(), 
+				list.getList().get(0).getKontaktliste_fk(), list.getList().get(0).getPassword(), list.getList().get(0).getInterests());
 	}
 	
 	/**
-	 * Mit der URL /Person alle Person ermitteln
+	 * Mit der URL /persons alle Person ermitteln
 	 * 
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 * @return	Personliste
@@ -73,25 +94,39 @@ public class PersonenRESTResource {
 	}
 	
 	/**
-	 * Einen neuen Person abspeichern
+	 * Eine neue Person abspeichern.
 	 * 
 	 * @param person Das Person-Objekt
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 * @param headers
+	 * @return 
 	 * @return
 	 * @throws URISyntaxException 
 	 */
+	@Path("/create")
 	@POST
+    @XmlElement(type = Person.class)
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML })
 	@Produces
 	public Response createPerson(Person person, 
 			@Context UriInfo uriInfo, 
-			@Context HttpHeaders headers) throws URISyntaxException {
-		return Response.created(new URI("uri zur angelegten person hier")).build();
+			@Context HttpHeaders headers)
+			{
+//		PersonList list = new PersonList();
+//		list.getList().add(person);
+//		java.util.Date utilDate = person.getBirthday();
+//		System.out.println(utilDate);
+//	    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+//	    System.out.println(sqlDate);
+//		System.out.println("Übergebenes Objekt der Person: " + person.getEmail());
+System.out.println(person.getFirstName() + person.getLastName() + person.getPhone() + person.getEmail() + 1 + person.getPassword() + person.getInterests());
+		dao.create(person.getFirstName(), person.getLastName(),  null, person.getPhone(), person.getEmail(), 1, person.getPassword(), person.getInterests());
+
+		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
 	
 	/**
-	 * Aktualisiert einen Person
+	 * Aktualisiert eine Person
 	 * 
 	 * @param person Das zu akualisierende Objekt
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
@@ -105,15 +140,17 @@ public class PersonenRESTResource {
 	}
 	
 	/**
-	 * Loescht einen Person
+	 * Loescht eine Person unter angabe der E-Mail-Adresse.
 	 * 
 	 * @param id ID des Persons
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 */
 	@DELETE
-	@Path("{id:[1-9][0-9]*}")
-	public void deletePerson(@PathParam("id") Long id) {
-		// TODO
+	@Path("/delete/{email}")
+	public void deletePerson(@PathParam("email") String email) {
+		dao.deleteByEmail(email);
+		if(email==null)
+		      throw new RuntimeException("Delete: Person with " + email +  " not found");
 	}
 
 

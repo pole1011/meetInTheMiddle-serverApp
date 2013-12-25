@@ -61,6 +61,8 @@ public class PersonDatabaseDao implements PersonDao {
 		dataSource = source;
 	}
 	  
+	
+	
 	@Override
 	public List<Person> selectAll() {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
@@ -70,14 +72,16 @@ public class PersonDatabaseDao implements PersonDao {
 		return list;
 	}
 
-	@Override
-	public void create(String firstName, String lastName,Date birthday, String phone, String email,
-			String kontaktliste, String password, String interests) {
+	public void create(String firstName, String lastName,Date test, String phone, String email,
+			Integer kontaktliste, String password, String interests) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
+		Date birthday = new Date(2012,12,12);
 		insert.update(
 				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,KONTAKTLISTE_FK,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
-				new Object[] { firstName, lastName, birthday, phone, email, kontaktliste, 
+				new Object[] { firstName, lastName, new java.sql.Date(birthday.getTime()), phone, email, kontaktliste, 
 						password, interests });
+//				new Object[] { "felix", "blubb", new java.sql.Date(mBirthday.getTime()), "102932", "fefe@dew", 1, 
+//						"dwe", "mwdiowenoi" });
 	}
 
 	@Override
@@ -86,5 +90,24 @@ public class PersonDatabaseDao implements PersonDao {
 		return select
 				.query("Select EMAIL, PASSWORD from Person where EMAIL = ? AND PASSWORD = ?);",
 						new PersonMapper());
+	}
+
+
+
+	@Override
+	public List<Person> findPersonById(Long id) {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		return select.query("Select * from Person where id=?", 
+				new Object[] { id },
+	            new PersonMapper());
+	}
+
+
+
+	@Override
+	public Person deleteByEmail(String email) {
+		JdbcTemplate delete = new JdbcTemplate(dataSource);
+		delete.update("Delete from Person where email= ?", new Object[] {email});
+		return null;
 	}
 }
