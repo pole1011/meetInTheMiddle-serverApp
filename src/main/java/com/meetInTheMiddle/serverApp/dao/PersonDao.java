@@ -1,6 +1,6 @@
 package com.meetInTheMiddle.serverApp.dao;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import com.meetInTheMiddle.serverApp.domain.Person;

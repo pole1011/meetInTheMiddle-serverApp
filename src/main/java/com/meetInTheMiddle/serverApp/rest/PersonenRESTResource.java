@@ -7,7 +7,7 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +89,9 @@ public class PersonenRESTResource {
 			@QueryParam("name") @DefaultValue("") String name) {
 		
 		PersonList list = new PersonList();
+		if(list == null){
+			//TODO exception;
+		}
 		list.setList(dao.selectAll());
 		return list;
 	}
@@ -106,7 +109,7 @@ public class PersonenRESTResource {
 	@Path("/create")
 	@POST
     @XmlElement(type = Person.class)
-	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML })
+	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
 	@Produces
 	public Response createPerson(Person person, 
 			@Context UriInfo uriInfo, 
@@ -119,8 +122,8 @@ public class PersonenRESTResource {
 //	    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 //	    System.out.println(sqlDate);
 //		System.out.println("Übergebenes Objekt der Person: " + person.getEmail());
-System.out.println(person.getFirstName() + person.getLastName() + person.getPhone() + person.getEmail() + 1 + person.getPassword() + person.getInterests());
-		dao.create(person.getFirstName(), person.getLastName(),  null, person.getPhone(), person.getEmail(), 1, person.getPassword(), person.getInterests());
+		System.out.println(person.getFirstName() + person.getLastName() + person.getBirthday() + person.getPhone() + person.getEmail() + 1 + person.getPassword() + person.getInterests());
+		dao.create(person.getFirstName(), person.getLastName(),  person.getBirthday(), person.getPhone(), person.getEmail(), 1, person.getPassword(), person.getInterests());
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
@@ -148,9 +151,9 @@ System.out.println(person.getFirstName() + person.getLastName() + person.getPhon
 	@DELETE
 	@Path("/delete/{email}")
 	public void deletePerson(@PathParam("email") String email) {
-		dao.deleteByEmail(email);
 		if(email==null)
 		      throw new RuntimeException("Delete: Person with " + email +  " not found");
+		dao.deleteByEmail(email);
 	}
 
 

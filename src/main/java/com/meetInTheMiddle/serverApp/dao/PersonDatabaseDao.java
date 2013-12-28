@@ -1,6 +1,8 @@
 package com.meetInTheMiddle.serverApp.dao;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -75,13 +77,19 @@ public class PersonDatabaseDao implements PersonDao {
 	public void create(String firstName, String lastName,Date test, String phone, String email,
 			Integer kontaktliste, String password, String interests) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
-		Date birthday = new Date(2012,12,12);
+
+SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		try {
+			 test = birthday.parse(test.toString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(test.toString());
 		insert.update(
 				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,KONTAKTLISTE_FK,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
-				new Object[] { firstName, lastName, new java.sql.Date(birthday.getTime()), phone, email, kontaktliste, 
+				new Object[] { firstName, lastName, test, phone, email, kontaktliste, 
 						password, interests });
-//				new Object[] { "felix", "blubb", new java.sql.Date(mBirthday.getTime()), "102932", "fefe@dew", 1, 
-//						"dwe", "mwdiowenoi" });
 	}
 
 	@Override
