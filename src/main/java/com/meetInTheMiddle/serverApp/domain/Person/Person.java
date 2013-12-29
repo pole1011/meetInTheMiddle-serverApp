@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.domain;
+package com.meetInTheMiddle.serverApp.domain.Person;
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ public class Person {
 	public Person() {
 	}
 @XmlElement
-private String id;
+private Long id;
 @XmlElement(required=true)
 private String firstName;
 @XmlElement(required=true)
@@ -116,10 +116,10 @@ public String getInterests() {
 public void setInterests(String interests) {
 	this.interests = interests;
 }
-public String getId() {
+public Long getId() {
 	return id;
 }
-public void setId(String id) {
+public void setId(Long id) {
 	this.id = id;
 }
 @Override

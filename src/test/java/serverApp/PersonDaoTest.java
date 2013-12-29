@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.meetInTheMiddle.serverApp.dao.PersonMockDao;
-import com.meetInTheMiddle.serverApp.domain.Person;
+import com.meetInTheMiddle.serverApp.dao.Person.PersonMockDao;
+import com.meetInTheMiddle.serverApp.domain.Person.Person;
 
 public class PersonDaoTest {
 	PersonMockDao dao = new PersonMockDao();

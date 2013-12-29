@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.dao;
+package com.meetInTheMiddle.serverApp.dao.Person;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,9 +15,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.meetInTheMiddle.serverApp.domain.Person;
+import com.meetInTheMiddle.serverApp.domain.Person.Person;
 import com.meetInTheMiddle.serverApp.util.Constants;
-
+/**
+ * 
+ * @author Felix
+ *
+ */
 public class PersonDatabaseDao implements PersonDao {
 	
 	public class PersonMapper implements RowMapper<Person> {
@@ -26,7 +30,7 @@ public class PersonDatabaseDao implements PersonDao {
 	     */
 	    public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
 	        Person person=new Person();
-	        person.setId(rs.getString("ID"));
+	        person.setId(rs.getLong("ID"));
 	        person.setFirstName(rs.getString("VORNAME"));
 	        person.setLastName(rs.getString("NACHNAME"));
 	        person.setBirthday(rs.getDate("GEBURTSDATUM"));
@@ -103,9 +107,9 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
 
 	@Override
-	public List<Person> findPersonById(Long id) {
+	public Person findPersonById(Long id) {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return select.query("Select * from Person where id=?", 
+		return (Person) select.queryForObject("Select * from Person where id=?", 
 				new Object[] { id },
 	            new PersonMapper());
 	}

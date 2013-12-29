@@ -7,7 +7,7 @@
  */
 @XmlSchema(elementFormDefault = XmlNsForm.QUALIFIED, namespace = PERSONS_NS, xmlns = @XmlNs(prefix = "", namespaceURI = PERSONS_NS))
 @XmlAccessorType(FIELD)
-package com.meetInTheMiddle.serverApp.domain;
+package com.meetInTheMiddle.serverApp.domain.Person;
 
 import static com.meetInTheMiddle.serverApp.util.Constants.PERSONS_NS;
 import static javax.xml.bind.annotation.XmlAccessType.FIELD;

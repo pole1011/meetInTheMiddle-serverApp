@@ -35,11 +35,11 @@ import javax.xml.bind.annotation.XmlElements;
 
 import sun.rmi.runtime.Log;
 
-import com.meetInTheMiddle.serverApp.dao.PersonDao;
-import com.meetInTheMiddle.serverApp.dao.PersonDatabaseDao;
-import com.meetInTheMiddle.serverApp.dao.PersonMockDao;
-import com.meetInTheMiddle.serverApp.domain.Person;
-import com.meetInTheMiddle.serverApp.domain.PersonList;
+import com.meetInTheMiddle.serverApp.dao.Person.PersonDao;
+import com.meetInTheMiddle.serverApp.dao.Person.PersonDatabaseDao;
+import com.meetInTheMiddle.serverApp.dao.Person.PersonMockDao;
+import com.meetInTheMiddle.serverApp.domain.Person.Person;
+import com.meetInTheMiddle.serverApp.domain.Person.PersonList;
 import com.sun.jersey.api.NotFoundException;
 
 /**
@@ -66,16 +66,7 @@ public class PersonenRESTResource {
 	@Produces(MediaType.APPLICATION_XML)
 	public Person findPersonById(@PathParam("id") Long id, 
 			@Context UriInfo uriInfo) {
-		PersonList list = new PersonList();
-		list.setList(dao.findPersonById(id));
-		System.out.println("Vorname der Per ID gesuchten Person: " + list.getList().get(0).getFirstName());
-		if (list.getList().get(0) == null) {
-			final String msg = "KEINE_PERSON_GEFUNDEN_MIT_ID" + id;
-			throw new NotFoundException(msg);
-			}
-		return new Person(list.getList().get(0).getFirstName(), list.getList().get(0).getLastName(), 
-				list.getList().get(0).getBirthday(), list.getList().get(0).getPhone(), list.getList().get(0).getEmail(), 
-				list.getList().get(0).getKontaktliste_fk(), list.getList().get(0).getPassword(), list.getList().get(0).getInterests());
+		return dao.findPersonById(id);
 	}
 	
 	/**
@@ -89,9 +80,6 @@ public class PersonenRESTResource {
 			@QueryParam("name") @DefaultValue("") String name) {
 		
 		PersonList list = new PersonList();
-		if(list == null){
-			//TODO exception;
-		}
 		list.setList(dao.selectAll());
 		return list;
 	}
@@ -106,7 +94,7 @@ public class PersonenRESTResource {
 	 * @return
 	 * @throws URISyntaxException 
 	 */
-	@Path("/create")
+//	@Path("/create")
 	@POST
     @XmlElement(type = Person.class)
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
@@ -115,13 +103,6 @@ public class PersonenRESTResource {
 			@Context UriInfo uriInfo, 
 			@Context HttpHeaders headers)
 			{
-//		PersonList list = new PersonList();
-//		list.getList().add(person);
-//		java.util.Date utilDate = person.getBirthday();
-//		System.out.println(utilDate);
-//	    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-//	    System.out.println(sqlDate);
-//		System.out.println("Übergebenes Objekt der Person: " + person.getEmail());
 		System.out.println(person.getFirstName() + person.getLastName() + person.getBirthday() + person.getPhone() + person.getEmail() + 1 + person.getPassword() + person.getInterests());
 		dao.create(person.getFirstName(), person.getLastName(),  person.getBirthday(), person.getPhone(), person.getEmail(), 1, person.getPassword(), person.getInterests());
 
@@ -139,7 +120,20 @@ public class PersonenRESTResource {
 	public void updatePerson(Person person,
 			@Context UriInfo uriInfo,
 			@Context HttpHeaders headers) {
-		// TODO
+//		// Vorhandene Person ermitteln
+//				final Person origPerson = kv.findKundeById(kunde.getId());
+//				if (origKunde == null) {
+//					final String msg = KEIN_KUNDE_GEFUNDEN_MIT_ID + kunde.getId();
+//					throw new NotFoundException(msg);
+//				}
+//				
+//				LOGGER.tracef("%s", origKunde);
+//
+//				final List<Locale> locales = headers.getAcceptableLanguages();
+//				final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
+//				
+//				// Update durchfuehren
+//				kv.updateKunde(kunde, locale);
 	}
 	
 	/**

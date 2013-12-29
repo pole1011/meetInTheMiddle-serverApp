@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.dao;
+package com.meetInTheMiddle.serverApp.dao.Person;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.meetInTheMiddle.serverApp.domain.Person;
+import com.meetInTheMiddle.serverApp.domain.Person.Person;
 
 public class PersonMockDao implements PersonDao {
 	
@@ -41,7 +41,7 @@ public class PersonMockDao implements PersonDao {
 	}
 
 	@Override
-	public List<Person> findPersonById(Long id) {
+	public Person findPersonById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
