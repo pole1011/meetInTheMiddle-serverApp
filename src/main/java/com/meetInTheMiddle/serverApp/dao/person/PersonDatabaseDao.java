@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.dao.Person;
+package com.meetInTheMiddle.serverApp.dao.person;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.meetInTheMiddle.serverApp.domain.Person.Person;
+import com.meetInTheMiddle.serverApp.domain.location.Location;
+import com.meetInTheMiddle.serverApp.domain.person.Person;
 import com.meetInTheMiddle.serverApp.util.Constants;
 /**
  * 
@@ -100,7 +101,7 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	public List<Person> validate(String email, String password) {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
 		return select
-				.query("Select EMAIL, PASSWORD from Person where EMAIL = ? AND PASSWORD = ?);",
+				.query("Select EMAIL, PASSWORD from Person where EMAIL = ? AND PASSWORD = ?;",
 						new PersonMapper());
 	}
 
@@ -114,7 +115,11 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	            new PersonMapper());
 	}
 
-
+	@Override
+	public void updatePerson(Person person) {
+		JdbcTemplate update = new JdbcTemplate(dataSource);
+		update.update("update Person set VORNAME=?, NACHNAME = ?, GEBURTSDATUM = ?, TELEFONNR = ?, EMAIL = ?, PASSWORD = ?, INTERESSEN = ? where id= ?", new Object[] {person.getFirstName(),person.getLastName(),person.getBirthday(),person.getPhone(),person.getEmail(),person.getPassword(),person.getInterests(),person.getId()});
+	}
 
 	@Override
 	public Person deleteByEmail(String email) {

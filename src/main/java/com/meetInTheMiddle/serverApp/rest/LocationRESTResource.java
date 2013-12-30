@@ -35,11 +35,11 @@ import javax.xml.bind.annotation.XmlElements;
 
 import sun.rmi.runtime.Log;
 
-import com.meetInTheMiddle.serverApp.dao.Location.LocationDao;
-import com.meetInTheMiddle.serverApp.dao.Location.LocationDatabaseDao;
-import com.meetInTheMiddle.serverApp.domain.Location.Location;
-import com.meetInTheMiddle.serverApp.domain.Location.LocationList;
-import com.meetInTheMiddle.serverApp.domain.Person.Person;
+import com.meetInTheMiddle.serverApp.dao.location.LocationDao;
+import com.meetInTheMiddle.serverApp.dao.location.LocationDatabaseDao;
+import com.meetInTheMiddle.serverApp.domain.location.Location;
+import com.meetInTheMiddle.serverApp.domain.location.LocationList;
+import com.meetInTheMiddle.serverApp.domain.person.Person;
 import com.sun.jersey.api.NotFoundException;
 
 /**

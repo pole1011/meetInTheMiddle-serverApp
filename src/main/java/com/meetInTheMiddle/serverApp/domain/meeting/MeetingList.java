@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.domain.Meeting;
+package com.meetInTheMiddle.serverApp.domain.meeting;
 
 import java.util.List;
 

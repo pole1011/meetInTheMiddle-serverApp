@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.domain.Person;
+package com.meetInTheMiddle.serverApp.domain.person;
 
 import java.util.List;
 

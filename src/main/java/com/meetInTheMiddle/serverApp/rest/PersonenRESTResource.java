@@ -35,11 +35,11 @@ import javax.xml.bind.annotation.XmlElements;
 
 import sun.rmi.runtime.Log;
 
-import com.meetInTheMiddle.serverApp.dao.Person.PersonDao;
-import com.meetInTheMiddle.serverApp.dao.Person.PersonDatabaseDao;
-import com.meetInTheMiddle.serverApp.dao.Person.PersonMockDao;
-import com.meetInTheMiddle.serverApp.domain.Person.Person;
-import com.meetInTheMiddle.serverApp.domain.Person.PersonList;
+import com.meetInTheMiddle.serverApp.dao.person.PersonDao;
+import com.meetInTheMiddle.serverApp.dao.person.PersonDatabaseDao;
+import com.meetInTheMiddle.serverApp.dao.person.PersonMockDao;
+import com.meetInTheMiddle.serverApp.domain.person.Person;
+import com.meetInTheMiddle.serverApp.domain.person.PersonList;
 import com.sun.jersey.api.NotFoundException;
 
 /**
@@ -116,24 +116,27 @@ public class PersonenRESTResource {
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 */
 	@PUT
-	@Consumes(MediaType.APPLICATION_XML)
-	public void updatePerson(Person person,
+	@Consumes({MediaType.TEXT_XML, MediaType.APPLICATION_XML})
+	public Response updatePerson(Person person,
 			@Context UriInfo uriInfo,
 			@Context HttpHeaders headers) {
-//		// Vorhandene Person ermitteln
-//				final Person origPerson = kv.findKundeById(kunde.getId());
-//				if (origKunde == null) {
-//					final String msg = KEIN_KUNDE_GEFUNDEN_MIT_ID + kunde.getId();
-//					throw new NotFoundException(msg);
-//				}
-//				
+		// Vorhandene Person ermitteln
+				final Person origPerson = dao.findPersonById(person.getId());
+				if (origPerson == null) {
+					final String msg = "KEINE_PERSON_GEFUNDEN_MIT_ID "+ person.getId();
+					throw new NotFoundException(msg);
+				}
+				
 //				LOGGER.tracef("%s", origKunde);
-//
+
 //				final List<Locale> locales = headers.getAcceptableLanguages();
 //				final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-//				
-//				// Update durchfuehren
-//				kv.updateKunde(kunde, locale);
+				
+				// Update durchfuehren
+				System.out.println(person);
+				System.out.println(origPerson);
+				dao.updatePerson(person);
+				return Response.created(uriInfo.getAbsolutePath()).build();
 	}
 	
 	/**
@@ -143,7 +146,7 @@ public class PersonenRESTResource {
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 */
 	@DELETE
-	@Path("/delete/{email}")
+	@Path("/{email}")
 	public void deletePerson(@PathParam("email") String email) {
 		if(email==null)
 		      throw new RuntimeException("Delete: Person with " + email +  " not found");

@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.domain.Location;
+package com.meetInTheMiddle.serverApp.domain.location;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

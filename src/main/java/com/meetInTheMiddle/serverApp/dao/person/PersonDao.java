@@ -1,9 +1,9 @@
-package com.meetInTheMiddle.serverApp.dao.Person;
+package com.meetInTheMiddle.serverApp.dao.person;
 
 import java.util.Date;
 import java.util.List;
 
-import com.meetInTheMiddle.serverApp.domain.Person.Person;
+import com.meetInTheMiddle.serverApp.domain.person.Person;
 /**
  * 
  * @author Felix
@@ -16,4 +16,5 @@ public interface PersonDao {
 	public List<Person> validate(String email, String password);
 	public Person findPersonById(Long id);
 	public Person deleteByEmail(String email);
+	void updatePerson(Person person);
 }

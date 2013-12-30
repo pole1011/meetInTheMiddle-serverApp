@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.meetInTheMiddle.serverApp.dao.Person.PersonMockDao;
-import com.meetInTheMiddle.serverApp.domain.Person.Person;
+import com.meetInTheMiddle.serverApp.dao.person.PersonMockDao;
+import com.meetInTheMiddle.serverApp.domain.person.Person;
 
 public class PersonDaoTest {
 	PersonMockDao dao = new PersonMockDao();
@@ -20,7 +20,7 @@ public class PersonDaoTest {
 //	Date birthday = new Date(12-12-2012);
 	String phone = "12345123";
 	String email = "felix@albert.de";
-	int kontaktliste = 1;
+	Long kontaktliste = 1L;
 	String password = "test";
 	String interests = "testen";
 	@Test

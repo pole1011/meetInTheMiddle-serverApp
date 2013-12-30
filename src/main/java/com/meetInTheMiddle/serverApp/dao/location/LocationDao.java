@@ -1,9 +1,9 @@
-package com.meetInTheMiddle.serverApp.dao.Location;
+package com.meetInTheMiddle.serverApp.dao.location;
 
 import java.util.Date;
 import java.util.List;
 
-import com.meetInTheMiddle.serverApp.domain.Location.Location;
+import com.meetInTheMiddle.serverApp.domain.location.Location;
 /**
  * 
  * @author Felix

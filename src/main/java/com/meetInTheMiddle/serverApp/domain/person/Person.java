@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.domain.Person;
+package com.meetInTheMiddle.serverApp.domain.person;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="person")
 public class Person {
 	public Person(String firstName, String lastName, Date birthday,
-			String phone, String email, int kontaktliste_fk, String password,
+			String phone, String email, Long kontaktliste_fk, String password,
 			String interests) {
 		super();
 		this.firstName = firstName;
@@ -36,11 +36,11 @@ private String phone;
 @XmlElement(required = true)
 private String email;
 @XmlElement
-private int Wohnort_fk;
+private Long Wohnort_fk;
 @XmlElement
-private int privateinstellungen_fk;
+private Long privateinstellungen_fk;
 @XmlElement (required = true)
-private int Kontaktliste_fk = 1;
+private Long Kontaktliste_fk = 1L;
 @XmlElement(required=true)
 private String password;
 @XmlElement
@@ -81,25 +81,25 @@ public void setEmail(String email) {
 	this.email = email;
 }
 
-public int getWohnort_fk() {
+public Long getWohnort_fk() {
 	return Wohnort_fk;
 }
 
-public void setWohnort_fk(int wohnort_fk) {
+public void setWohnort_fk(Long wohnort_fk) {
 	Wohnort_fk = wohnort_fk;
 }
 
-public int getPrivateinstellungen_fk() {
+public Long getPrivateinstellungen_fk() {
 	return privateinstellungen_fk;
 }
-public void setPrivateinstellungen_fk(int privateinstellungen_fk) {
+public void setPrivateinstellungen_fk(Long privateinstellungen_fk) {
 	this.privateinstellungen_fk = privateinstellungen_fk;
 }
 
-public int getKontaktliste_fk() {
+public Long getKontaktliste_fk() {
 	return Kontaktliste_fk;
 }
-public void setKontaktliste_fk(int kontaktliste_fk) {
+public void setKontaktliste_fk(Long kontaktliste_fk) {
 	Kontaktliste_fk = kontaktliste_fk;
 }
 
@@ -121,22 +121,6 @@ public Long getId() {
 }
 public void setId(Long id) {
 	this.id = id;
-}
-@Override
-public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + Kontaktliste_fk;
-	result = prime * result + Wohnort_fk;
-	result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
-	result = prime * result + ((email == null) ? 0 : email.hashCode());
-	result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-	result = prime * result + ((interests == null) ? 0 : interests.hashCode());
-	result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-	result = prime * result + ((password == null) ? 0 : password.hashCode());
-	result = prime * result + ((phone == null) ? 0 : phone.hashCode());
-	result = prime * result + privateinstellungen_fk;
-	return result;
 }
 @Override
 public boolean equals(Object obj) {

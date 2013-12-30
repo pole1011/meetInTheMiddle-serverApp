@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.dao.Location;
+package com.meetInTheMiddle.serverApp.dao.location;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +12,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.meetInTheMiddle.serverApp.dao.Person.PersonDatabaseDao.PersonMapper;
-import com.meetInTheMiddle.serverApp.domain.Location.Location;
-import com.meetInTheMiddle.serverApp.domain.Person.Person;
+import com.meetInTheMiddle.serverApp.dao.person.PersonDatabaseDao.PersonMapper;
+import com.meetInTheMiddle.serverApp.domain.location.Location;
+import com.meetInTheMiddle.serverApp.domain.person.Person;
 import com.meetInTheMiddle.serverApp.util.Constants;
 
 /**
