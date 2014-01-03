@@ -6,13 +6,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name="location")
 public class Location {
+	
+	public Location(String stadtname, String plz) {
+		super();
+		this.stadtname = stadtname;
+		this.plz = plz;
+	}
 	public Location(){
 		
-	}
-public Location(String stadtname, String plz) {
-		super();
-		stadtname = stadtname;
-		this.plz = plz;
 	}
 @XmlElement
 private long id;
@@ -29,8 +30,8 @@ public void setId(long id) {
 public String getStadtname() {
 	return stadtname;
 }
-public void setStadtname(String Stadtname) {
-	stadtname = Stadtname;
+public void setStadtname(String stadtname) {
+	this.stadtname = stadtname;
 }
 public String getPlz() {
 	return plz;
@@ -42,9 +43,9 @@ public void setPlz(String plz) {
 public int hashCode() {
 	final int prime = 31;
 	int result = 1;
-	result = prime * result + ((stadtname == null) ? 0 : stadtname.hashCode());
 	result = prime * result + (int) (id ^ (id >>> 32));
 	result = prime * result + ((plz == null) ? 0 : plz.hashCode());
+	result = prime * result + ((stadtname == null) ? 0 : stadtname.hashCode());
 	return result;
 }
 @Override
@@ -56,11 +57,6 @@ public boolean equals(Object obj) {
 	if (getClass() != obj.getClass())
 		return false;
 	Location other = (Location) obj;
-	if (stadtname == null) {
-		if (other.stadtname != null)
-			return false;
-	} else if (!stadtname.equals(other.stadtname))
-		return false;
 	if (id != other.id)
 		return false;
 	if (plz == null) {
@@ -68,11 +64,16 @@ public boolean equals(Object obj) {
 			return false;
 	} else if (!plz.equals(other.plz))
 		return false;
+	if (stadtname == null) {
+		if (other.stadtname != null)
+			return false;
+	} else if (!stadtname.equals(other.stadtname))
+		return false;
 	return true;
 }
 @Override
 public String toString() {
-	return "Location [id=" + id + ", Stadtname=" + stadtname + ", plz=" + plz
+	return "Location [id=" + id + ", stadtname=" + stadtname + ", plz=" + plz
 			+ "]";
 }
 }

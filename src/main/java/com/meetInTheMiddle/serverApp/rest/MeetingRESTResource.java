@@ -35,28 +35,32 @@ import javax.xml.bind.annotation.XmlElements;
 
 import sun.rmi.runtime.Log;
 
-import com.meetInTheMiddle.serverApp.dao.location.LocationDao;
-import com.meetInTheMiddle.serverApp.dao.location.LocationDatabaseDao;
-import com.meetInTheMiddle.serverApp.domain.location.Location;
-import com.meetInTheMiddle.serverApp.domain.location.LocationList;
-import com.meetInTheMiddle.serverApp.domain.person.Person;
+
+
+
+
+
+import com.meetInTheMiddle.serverApp.dao.meeting.MeetingDao;
+import com.meetInTheMiddle.serverApp.dao.meeting.MeetingDatabaseDao;
+import com.meetInTheMiddle.serverApp.domain.meeting.Meeting;
+import com.meetInTheMiddle.serverApp.domain.meeting.MeetingList;
 import com.sun.jersey.api.NotFoundException;
 
 /**
- * Interface fuer dieRessource, die ueber eine URL erreichbar ist und 
+ * Interface fuer die Ressource, die ueber eine URL erreichbar ist und 
  * auf welcher verschiedene Operationen durchgefuehrt werden koennen sollen.
  * 
  */
-@Path("/locations")
+@Path("/meetings")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
-public class LocationRESTResource {
+public class MeetingRESTResource {
 //	public Logger logger = new Logger(PersonenRESTResource.class.getName());
-	private Map<String, Location> locations = new HashMap<>();
-	private LocationDao dao = new LocationDatabaseDao(); // TODO: Mocking abschalten mit = new LocationDatabaseDao() //new LocationMockDao(); 
+	private Map<String, Meeting> meetings = new HashMap<>();
+	private MeetingDao dao = new MeetingDatabaseDao(); // TODO: Mocking abschalten mit = new LocationDatabaseDao() //new LocationMockDao(); 
 
 	/**
-	 * Mit der URL /locations/{id} einen Ort ermitteln
+	 * Mit der URL /meetings/{id} ein Treffen ermitteln
 	 * @param id ID des Orts
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 * @return Objekt mit Ortsdaten, falls die ID vorhanden ist
@@ -64,42 +68,43 @@ public class LocationRESTResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Location findLocationById(@PathParam("id") Long id, 
+	public Meeting findMeetingById(@PathParam("id") Long id, 
 			@Context UriInfo uriInfo) {
 
-		return dao.findLocationById(id);
+		return dao.findMeetingById(id);
 	}
 	
 	/**
-	 * Mit der URL /persons alle Person ermitteln
+	 * Mit der URL /meetings alle Treffen ermitteln
 	 * 
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
-	 * @return	Personliste
+	 * @return	Treffenliste
 	 * @throws Exception 
 	 */
 	@GET
-	public LocationList findAlleLocations(@Context UriInfo uriInfo) {
+	public MeetingList findAlleMeetings(@Context UriInfo uriInfo,
+			@QueryParam("stadtname") @DefaultValue("") String name) {
 		
-		LocationList list = new LocationList();
+		MeetingList list = new MeetingList();
 		list.setList(dao.selectAll());
 		return list;
 	}
 	
 	/**
-	 * Aktualisiert einen Ort
+	 * Aktualisiert ein Treffen
 	 * 
 	 * @param person Das zu akualisierende Objekt
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 */
 	@PUT
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML})
-	public Response updateLocation(Location location,
+	public Response updateMeeting(Meeting meeting,
 			@Context UriInfo uriInfo,
 			@Context HttpHeaders headers) {
-				// Vorhandenen Ort ermitteln
-				final Location origLocation = dao.findLocationById(location.getId());
-				if (origLocation == null) {
-					final String msg ="KEINEN_ORT_GEFUNDEN_MIT_ID "+ location.getId();
+				// Vorhandenes Treffen ermitteln
+				final Meeting origMeeting = dao.findMeetingById(meeting.getId());
+				if (origMeeting == null) {
+					final String msg ="KEIN_TREFFEN_GEFUNDEN_MIT_ID "+ meeting.getId();
 					throw new NotFoundException(msg);
 				}				
 //				LOGGER.tracef("%s", origKunde);
@@ -108,14 +113,14 @@ public class LocationRESTResource {
 //				final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 				
 				// Update durchfuehren
-				dao.updateLocation(location);
+				dao.updateMeeting(meeting);
 				return Response.created(uriInfo.getAbsolutePath()).build();
 	}
 	
 	/**
-	 * Eine neue Person abspeichern.
+	 * Ein neues Treffen abspeichern.
 	 * 
-	 * @param person Das Person-Objekt
+	 * @param treffen Das Treffen-Objekt
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 * @param headers
 	 * @return 
@@ -124,15 +129,14 @@ public class LocationRESTResource {
 	 */
 //	@Path("/create")
 	@POST
-    @XmlElement(type = Location.class)
+    @XmlElement(type = Meeting.class)
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
 	@Produces
-	public Response createLocation(Location location, 
+	public Response createMeeting(Meeting meeting, 
 			@Context UriInfo uriInfo, 
 			@Context HttpHeaders headers)
 			{
-//		System.out.println(person.getFirstName() + person.getLastName() + person.getBirthday() + person.getPhone() + person.getEmail() + 1 + person.getPassword() + person.getInterests());
-		dao.create(location.getStadtname(), location.getPlz());
+		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_fk(),meeting.getKommentar());
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
@@ -144,14 +148,11 @@ public class LocationRESTResource {
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 */
 	@DELETE
-	@Path("/delete/{stadtname}/{plz}")
-	public void deleteLocation(@PathParam("stadtname") String stadtname,
-			@PathParam("plz") String plz) {
-		if(stadtname==null)
-		      throw new RuntimeException("Delete: Ort " + stadtname +  " not found");
-		if(plz==null)
-		      throw new RuntimeException("Delete: Ort mit plz " + plz +  " not found");
-		dao.deleteByStadtnameUndPlz(stadtname,plz);
+	@Path("/{id}")
+	public void deleteMeeting(@PathParam("id") Long id) {
+		if(id==null)
+		      throw new RuntimeException("Delete: Treffen " + id +  " not found");
+		dao.deleteById(id);
 	}
 
 

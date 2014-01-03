@@ -1,6 +1,5 @@
 package com.meetInTheMiddle.serverApp.dao.location;
 
-import java.util.Date;
 import java.util.List;
 
 import com.meetInTheMiddle.serverApp.domain.location.Location;

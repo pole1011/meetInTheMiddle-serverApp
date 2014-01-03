@@ -15,7 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.meetInTheMiddle.serverApp.domain.location.Location;
 import com.meetInTheMiddle.serverApp.domain.person.Person;
 import com.meetInTheMiddle.serverApp.util.Constants;
 /**
