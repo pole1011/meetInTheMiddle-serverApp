@@ -11,7 +11,7 @@ public class Meeting {
 		
 	}
 	public Meeting(Long pers1_fk, Long pers2_fk, Date uhrzeit,
-			Long lokalitaet_fk, Long ort_fk, String bewertung,
+			Long lokalitaet_fk, Long ort_fk, int bewertung,
 			Long verkehrsmittel_fk, String kommentar) {
 		super();
 		this.pers1_fk = pers1_fk;
@@ -31,12 +31,12 @@ public class Meeting {
 	private Long pers2_fk;
 	@XmlElement(required=true)
 	private Date uhrzeit;
-	@XmlElement(required=true)
+	@XmlElement
 	private Long lokalitaet_fk;
 	@XmlElement(required = true)
 	private Long ort_fk;
 	@XmlElement
-	private String bewertung;
+	private int bewertung;
 	@XmlElement
 	private Long verkehrsmittel_fk;
 	@XmlElement
@@ -78,10 +78,10 @@ public class Meeting {
 	public void setOrt_fk(Long ort_fk) {
 		this.ort_fk = ort_fk;
 	}
-	public String getBewertung() {
+	public int getBewertung() {
 		return bewertung;
 	}
-	public void setBewertung(String bewertung) {
+	public void setBewertung(int bewertung) {
 		this.bewertung = bewertung;
 	}
 	public Long getVerkehrsmittel_fk() {
@@ -100,8 +100,7 @@ public class Meeting {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((bewertung == null) ? 0 : bewertung.hashCode());
+		result = prime * result + bewertung;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((kommentar == null) ? 0 : kommentar.hashCode());
@@ -128,10 +127,7 @@ public class Meeting {
 		if (getClass() != obj.getClass())
 			return false;
 		Meeting other = (Meeting) obj;
-		if (bewertung == null) {
-			if (other.bewertung != null)
-				return false;
-		} else if (!bewertung.equals(other.bewertung))
+		if (bewertung != other.bewertung)
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -183,4 +179,5 @@ public class Meeting {
 				+ bewertung + ", verkehrsmittel_fk=" + verkehrsmittel_fk
 				+ ", kommentar=" + kommentar + "]";
 	}
+	
 }

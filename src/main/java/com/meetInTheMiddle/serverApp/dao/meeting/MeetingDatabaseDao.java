@@ -35,7 +35,7 @@ public class MeetingDatabaseDao implements MeetingDao{
 	        meeting.setUhrzeit(rs.getDate("UHRZEIT"));
 	        meeting.setLokalitaet_fk(rs.getLong("LOKALITAET_FK"));
 	        meeting.setOrt_fk(rs.getLong("ORT_FK"));
-	        meeting.setBewertung(rs.getString("BEWERTUNG"));
+	        meeting.setBewertung(rs.getInt("BEWERTUNG"));
 	        meeting.setVerkehrsmittel_fk(rs.getLong("VERKEHRSMITTEL_FK"));
 	        meeting.setKommentar(rs.getString("KOMMENTAR"));
 	        return meeting;
@@ -78,11 +78,11 @@ public class MeetingDatabaseDao implements MeetingDao{
 
 	@Override
 	public void create(Long pers1_fk, Long pers2_fk, Date uhrzeit,
-			Long lokalitaet_fk, Long ort_fk, String bewertung,
+			Long lokalitaet_fk, Long ort_fk, int bewertung,
 			Long verkehrsmittel_fk, String kommentar) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
 		insert.update(
-				"INSERT INTO TREFFEN (PERS1_FK,PERS2_FK,UHRZEIT,LOKALITAET__FK,ORT_FK,BEWERTUNG,VERKEHRSMITTEL_FK,KOMMENTAR) VALUES(SEQUENCE_TREFFEN_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
+				"INSERT INTO TREFFEN (ID,PERS1_FK,PERS2_FK,UHRZEIT,LOKALITAET_FK,ORT_FK,BEWERTUNG,VERKEHRSMITTEL_FK,KOMMENTAR) VALUES(SEQUENCE_TREFFEN_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
 				new Object[] { pers1_fk, pers2_fk,uhrzeit,lokalitaet_fk,ort_fk,bewertung,verkehrsmittel_fk,kommentar});
 	}
 
@@ -105,7 +105,7 @@ public class MeetingDatabaseDao implements MeetingDao{
 	@Override
 	public void updateMeeting(Meeting meeting) {
 		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update("update ort set PERS1_FK = ?,PERS2_FK = ?,UHRZEIT = ?,LOKALITAET = ?,ORT_FK = ?,BEWERTUNG = ?,VERKEHRSMITTEL_FK = ?,KOMMENTAR = ? where id= ?", 
+		update.update("update TREFFEN set PERS1_FK = ?,PERS2_FK = ?,UHRZEIT = ?,LOKALITAET_FK = ?,ORT_FK = ?,BEWERTUNG = ?,VERKEHRSMITTEL_FK = ?, KOMMENTAR = ? where id= ?", 
 				new Object[] {meeting.getPers1_fk(),meeting.getPers2_fk(),meeting.getUhrzeit(),meeting.getLokalitaet_fk(),meeting.getOrt_fk(),meeting.getBewertung(),meeting.getVerkehrsmittel_fk(),meeting.getKommentar(),meeting.getId()});
 	}
 

@@ -136,13 +136,14 @@ public class MeetingRESTResource {
 			@Context UriInfo uriInfo, 
 			@Context HttpHeaders headers)
 			{
+		System.out.println(meeting);
 		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_fk(),meeting.getKommentar());
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
 	
 	/**
-	 * Loescht einen Ort unter angabe des Stadtnamens und der plz.
+	 * Loescht ein Treffen nach id.
 	 * 
 	 * @param id ID des Orts
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
