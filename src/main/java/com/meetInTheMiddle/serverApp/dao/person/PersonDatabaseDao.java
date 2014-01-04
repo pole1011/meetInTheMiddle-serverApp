@@ -126,4 +126,24 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 		delete.update("Delete from Person where email= ?", new Object[] {email});
 		return null;
 	}
+
+
+
+	@Override
+	public void createContact(Long person_1_id, Long person_2_id) {
+		JdbcTemplate insert = new JdbcTemplate(dataSource);
+		insert.update(
+				"INSERT INTO KONTAKTLISTE (ID, BELONGSTO, KONTAKT_FK) VALUES(SEQUENCE_KONTAKTLISTE_PK.NEXTVAL,?,?)",
+				new Object[] { person_1_id, person_2_id});
+	}
+
+
+
+	@Override
+	public List<Person> findContactsById(Long id) {
+			JdbcTemplate select = new JdbcTemplate(dataSource);
+			return  select.query("SELECT * from Person where id in (select K.KONTAKT_FK from KONTAKTLISTE K where K.belongsto = ?)", 
+					new Object[] { id },
+		            new PersonMapper());
+	}
 }

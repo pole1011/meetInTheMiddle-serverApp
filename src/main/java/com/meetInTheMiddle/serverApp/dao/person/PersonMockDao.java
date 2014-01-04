@@ -58,4 +58,16 @@ public class PersonMockDao implements PersonDao {
 		
 	}
 
+	@Override
+	public void createContact(Long person_1_id, Long person_2_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Person> findContactsById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

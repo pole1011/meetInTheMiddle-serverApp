@@ -57,7 +57,7 @@ public class PersonenRESTResource {
 
 	/**
 	 * Mit der URL /persons/{id} eine Person ermitteln
-	 * @param id ID der Persons
+	 * @param id ID der Person
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 * @return Objekt mit Personendaten, falls die ID vorhanden ist
 	 */
@@ -67,6 +67,22 @@ public class PersonenRESTResource {
 	public Person findPersonById(@PathParam("id") Long id, 
 			@Context UriInfo uriInfo) {
 		return dao.findPersonById(id);
+	}
+	
+	/**
+	 * Mit der URL /persons/{id}/contacts alle Kontakte zu einer Person ermitteln.
+	 * @param id ID der Person
+	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * @return Objekt mit Personendaten, falls die ID vorhanden ist
+	 */
+	@GET
+	@Path("{id:[1-9][0-9]*}/contacts")
+	@Produces(MediaType.APPLICATION_XML)
+	public PersonList findContactsById(@PathParam("id") Long id, 
+			@Context UriInfo uriInfo) {
+		PersonList list = new PersonList();
+		list.setList(dao.findContactsById(id));
+		return list;
 	}
 	
 	/**
@@ -105,6 +121,29 @@ public class PersonenRESTResource {
 			{
 		System.out.println(person.getFirstName() + person.getLastName() + person.getBirthday() + person.getPhone() + person.getEmail() + 1 + person.getPassword() + person.getInterests());
 		dao.create(person.getFirstName(), person.getLastName(),  person.getBirthday(), person.getPhone(), person.getEmail(), 1, person.getPassword(), person.getInterests());
+		return Response.created(uriInfo.getAbsolutePath()).build();
+	}
+	
+	/**
+	 * Einen neuen Kontakt abspeichern.
+	 * 
+	 * @param person Das Person-Objekt
+	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * @param headers
+	 * @return 
+	 * @return
+	 * @throws URISyntaxException 
+	 */
+	@Path("/contacts")
+	@POST
+    @XmlElement(type = Person.class)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
+	@Produces
+	public Response createContact(Long person_1_id, Long person_2_id,
+			@Context UriInfo uriInfo, 
+			@Context HttpHeaders headers)
+			{
+		dao.createContact(person_1_id,person_2_id);
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
