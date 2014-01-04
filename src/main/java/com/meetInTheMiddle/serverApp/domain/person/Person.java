@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="person")
 public class Person {
 	public Person(String firstName, String lastName, Date birthday,
-			String phone, String email, Long kontaktliste_fk, String password,
+			String phone, String email, String password,
 			String interests) {
 		super();
 		this.firstName = firstName;
@@ -17,7 +17,6 @@ public class Person {
 		this.birthday = birthday;
 		this.phone = phone;
 		this.email = email;
-		Kontaktliste_fk = kontaktliste_fk;
 		this.password = password;
 		this.interests = interests;
 	}
@@ -39,8 +38,6 @@ private String email;
 private Long Wohnort_fk;
 @XmlElement
 private Long privateinstellungen_fk;
-@XmlElement (required = true)
-private Long Kontaktliste_fk = 1L;
 @XmlElement(required=true)
 private String password;
 @XmlElement
@@ -96,12 +93,6 @@ public void setPrivateinstellungen_fk(Long privateinstellungen_fk) {
 	this.privateinstellungen_fk = privateinstellungen_fk;
 }
 
-public Long getKontaktliste_fk() {
-	return Kontaktliste_fk;
-}
-public void setKontaktliste_fk(Long kontaktliste_fk) {
-	Kontaktliste_fk = kontaktliste_fk;
-}
 
 public String getPassword() {
 	return password;
@@ -131,8 +122,6 @@ public boolean equals(Object obj) {
 	if (getClass() != obj.getClass())
 		return false;
 	Person other = (Person) obj;
-	if (Kontaktliste_fk != other.Kontaktliste_fk)
-		return false;
 	if (Wohnort_fk != other.Wohnort_fk)
 		return false;
 	if (birthday == null) {
@@ -180,7 +169,7 @@ public String toString() {
 			+ lastName + ", birthday=" + birthday + ", phone=" + phone
 			+ ", email=" + email + ", Wohnort_fk=" + Wohnort_fk
 			+ ", privateinstellungen_fk=" + privateinstellungen_fk
-			+ ", Kontaktliste_fk=" + Kontaktliste_fk + ", password=" + password
+			+ ", password=" + password
 			+ ", interests=" + interests + "]";
 }
 

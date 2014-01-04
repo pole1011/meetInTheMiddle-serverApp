@@ -79,7 +79,7 @@ public class PersonDatabaseDao implements PersonDao {
 	}
 
 	public void create(String firstName, String lastName,Date test, String phone, String email,
-			Integer kontaktliste, String password, String interests) {
+			String password, String interests) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
 
 SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
@@ -91,8 +91,8 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 		}
 		System.out.println(test.toString());
 		insert.update(
-				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,KONTAKTLISTE_FK,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
-				new Object[] { firstName, lastName, test, phone, email, kontaktliste, 
+				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?)",
+				new Object[] { firstName, lastName, test, phone, email, 
 						password, interests });
 	}
 

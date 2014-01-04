@@ -120,7 +120,7 @@ public class PersonenRESTResource {
 			@Context HttpHeaders headers)
 			{
 		System.out.println(person.getFirstName() + person.getLastName() + person.getBirthday() + person.getPhone() + person.getEmail() + 1 + person.getPassword() + person.getInterests());
-		dao.create(person.getFirstName(), person.getLastName(),  person.getBirthday(), person.getPhone(), person.getEmail(), 1, person.getPassword(), person.getInterests());
+		dao.create(person.getFirstName(), person.getLastName(),  person.getBirthday(), person.getPhone(), person.getEmail(), person.getPassword(), person.getInterests());
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
 	

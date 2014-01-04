@@ -12,7 +12,7 @@ import com.meetInTheMiddle.serverApp.domain.person.Person;
 public interface PersonDao {
 	public List<Person> selectAll();
 	public void create(String firstName, String lastName,Date birthday, String phone, String email,
-			Integer kontaktliste, String password, String interests);
+			 String password, String interests);
 	public List<Person> validate(String email, String password);
 	public Person findPersonById(Long id);
 	public Person deleteByEmail(String email);
