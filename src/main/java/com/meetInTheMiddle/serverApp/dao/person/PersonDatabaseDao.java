@@ -36,6 +36,7 @@ public class PersonDatabaseDao implements PersonDao {
 	        person.setBirthday(rs.getDate("GEBURTSDATUM"));
 	        person.setPhone(rs.getString("TELEFONNR"));
 	        person.setEmail(rs.getString("EMAIL"));
+	        person.setWohnort_fk(rs.getLong("WOHNORT_FK"));
 	        person.setPassword(rs.getString("PASSWORD"));
 	        person.setInterests(rs.getString("INTERESSEN"));
 	        return person;
@@ -91,7 +92,7 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 		}
 		System.out.println(test.toString());
 		insert.update(
-				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?)",
+				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL, WOHNORT_FK,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,SEQUENCE_WOHNORT_FK.NEXTVAL,?,?)",
 				new Object[] { firstName, lastName, test, phone, email, 
 						password, interests });
 	}
@@ -117,7 +118,7 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	@Override
 	public void updatePerson(Person person) {
 		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update("update Person set VORNAME=?, NACHNAME = ?, GEBURTSDATUM = ?, TELEFONNR = ?, EMAIL = ?, PASSWORD = ?, INTERESSEN = ? where id= ?", new Object[] {person.getFirstName(),person.getLastName(),person.getBirthday(),person.getPhone(),person.getEmail(),person.getPassword(),person.getInterests(),person.getId()});
+		update.update("update Person set VORNAME=?, NACHNAME = ?, GEBURTSDATUM = ?, TELEFONNR = ?, EMAIL = ?, WOHNORT_FK = ?, PASSWORD = ?, INTERESSEN = ? where id= ?", new Object[] {person.getFirstName(),person.getLastName(),person.getBirthday(),person.getPhone(),person.getEmail(),person.getPassword(),person.getInterests(),person.getId()});
 	}
 
 	@Override

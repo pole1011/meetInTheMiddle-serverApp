@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="person")
 public class Person {
 	public Person(String firstName, String lastName, Date birthday,
-			String phone, String email, String password,
+			String phone, String email, Long wohnort_fk, String password,
 			String interests) {
 		super();
 		this.firstName = firstName;
@@ -17,6 +17,7 @@ public class Person {
 		this.birthday = birthday;
 		this.phone = phone;
 		this.email = email;
+		this.Wohnort_fk = wohnort_fk;
 		this.password = password;
 		this.interests = interests;
 	}
