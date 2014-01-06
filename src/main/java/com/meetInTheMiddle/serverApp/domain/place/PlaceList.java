@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Felix
  *
  */
-@XmlRootElement(name = "locations")
+@XmlRootElement(name = "places")
 public class PlaceList {
 
 	@XmlElementRef

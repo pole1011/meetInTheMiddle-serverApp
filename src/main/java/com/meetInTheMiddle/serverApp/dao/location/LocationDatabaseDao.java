@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.dao.place;
+package com.meetInTheMiddle.serverApp.dao.location;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,26 +12,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.meetInTheMiddle.serverApp.domain.place.Place;
+import com.meetInTheMiddle.serverApp.domain.location.Location;
 import com.meetInTheMiddle.serverApp.util.Constants;
 
-/**
- * 
- * @author Felix
- *
- */
-public class PlaceDatabaseDao implements PlaceDao{
-
-	public class PlaceMapper implements RowMapper<Place> {
+public class LocationDatabaseDao implements LocationDao{
+	
+	public class LocationMapper implements RowMapper<Location> {
 	     /*implement abstract method for declaring mapping
 	     *between POJO attributes and relational table attributes
 	     */
-	    public Place mapRow(ResultSet rs, int rowNum) throws SQLException {
-	        Place place=new Place();
-	        place.setId(rs.getLong("ID"));
-	        place.setStadtname(rs.getString("STADTNAME"));
-	        place.setPlz(rs.getString("PLZ"));
-	        return place;
+	    public Location mapRow(ResultSet rs, int rowNum) throws SQLException {
+	        Location location=new Location();
+	        location.setId(rs.getLong("ID"));
+	        location.setBeschreibung(rs.getString("BESCHREIBUNG"));
+	        return location;
 	    }
 	}
 	
@@ -41,9 +35,9 @@ public class PlaceDatabaseDao implements PlaceDao{
 	public void setDataSource(DataSource ds) {
 		dataSource = ds;
 	}
-	private JdbcTemplate jdbcTemplate;  
+	private JdbcTemplate jdbcTemplate;
 	
-	public PlaceDatabaseDao() {
+	public LocationDatabaseDao() {
 		try {
 			Class.forName(oracle.jdbc.driver.OracleDriver.class.getName());
 		} catch (ClassNotFoundException e) {
@@ -59,44 +53,44 @@ public class PlaceDatabaseDao implements PlaceDao{
 		
 		dataSource = source;
 	}
-	
+
 	@Override
-	public List<Place> selectAll() {
+	public List<Location> selectAll() {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
 		
-		List<Place> list = select.query("select * from ORT", new PlaceMapper());
-		Logger.getGlobal().fine("LocationDao.selectAll(): " + list.size() + " Orte gefunden.");
+		List<Location> list = select.query("select * from LOKALITAET", new LocationMapper());
+		Logger.getGlobal().fine("LocationDao.selectAll(): " + list.size() + " Lokalitaeten gefunden.");
 		return list;
 	}
 
 	@Override
-	public void create(String stadtname, String plz) {
-			JdbcTemplate insert = new JdbcTemplate(dataSource);
-			insert.update(
-					"INSERT INTO ORT (ID,STADTNAME,PLZ) VALUES(SEQUENCE_ORT_PK.NEXTVAL,?,?)",
-					new Object[] { stadtname, plz});
+	public void create(String beschreibung) {
+		JdbcTemplate insert = new JdbcTemplate(dataSource);
+		insert.update(
+				"INSERT INTO LOKALITAET (ID,BESCHREIBUNG) VALUES(SEQUENCE_LOKALITAET_PK.NEXTVAL,?)",
+				new Object[] { beschreibung});
 	}
 
 	@Override
-	public Place findPlaceById(Long id) {
+	public Location findLocationById(Long id) {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
 
-		return (Place) select.queryForObject("Select * from ORT where id=?", 
+		return (Location) select.queryForObject("Select * from LOKALITAET where id=?", 
 				new Object[] { id },
-	            new PlaceMapper());
+	            new LocationMapper());
 	}
 
 	@Override
-	public Place deleteByStadtnameUndPlz(String stadtname, String plz) {
+	public Location deleteById(Long id) {
 		JdbcTemplate delete = new JdbcTemplate(dataSource);
-		delete.update("Delete from ORT where stadtname= ? and plz=?", new Object[] {stadtname,plz});
+		delete.update("Delete from LOKALITAET where id=?", new Object[] {id});
 		return null;
 	}
 
 	@Override
-	public void updatePlace(Place place) {
+	public void updateLocation(Location location) {
 		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update("update ort set stadtname=?, plz = ? where id= ?", new Object[] {place.getStadtname(),place.getPlz(),place.getId()});
+		update.update("update LOKALITAET set beschreibung = ? where id= ?", new Object[] {location.getId(),location.getBeschreibung()});
 	}
 
 }

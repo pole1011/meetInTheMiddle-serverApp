@@ -2,9 +2,8 @@ package com.meetInTheMiddle.serverApp.domain.place;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement(name="location")
+@XmlRootElement(name="place")
 public class Place {
 	
 	public Place(String stadtname, String plz) {

@@ -11,7 +11,7 @@ import com.meetInTheMiddle.serverApp.domain.place.Place;
 public interface PlaceDao {
 	public List<Place> selectAll();
 	public void create(String stadtname, String plz);
-	public Place findLocationById(Long id);
+	public Place findPlaceById(Long id);
 	public Place deleteByStadtnameUndPlz(String stadtname, String plz);
-	public void updateLocation(Place location);
+	public void updatePlace(Place place);
 }

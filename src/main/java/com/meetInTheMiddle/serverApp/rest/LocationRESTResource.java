@@ -1,6 +1,5 @@
 package com.meetInTheMiddle.serverApp.rest;
 
-// Web Service imports
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
@@ -24,10 +23,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 
-import com.meetInTheMiddle.serverApp.dao.place.PlaceDao;
-import com.meetInTheMiddle.serverApp.dao.place.PlaceDatabaseDao;
-import com.meetInTheMiddle.serverApp.domain.place.Place;
-import com.meetInTheMiddle.serverApp.domain.place.PlaceList;
+import com.meetInTheMiddle.serverApp.dao.location.LocationDao;
+import com.meetInTheMiddle.serverApp.dao.location.LocationDatabaseDao;
+import com.meetInTheMiddle.serverApp.domain.location.Location;
+import com.meetInTheMiddle.serverApp.domain.location.LocationList;
 import com.sun.jersey.api.NotFoundException;
 
 /**
@@ -35,16 +34,15 @@ import com.sun.jersey.api.NotFoundException;
  * auf welcher verschiedene Operationen durchgefuehrt werden koennen sollen.
  * 
  */
-@Path("/places")
+@Path("/locations")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
-public class PlaceRESTResource {
-//	public Logger logger = new Logger(PersonenRESTResource.class.getName());
-	private Map<String, Place> places = new HashMap<>();
-	private PlaceDao dao = new PlaceDatabaseDao(); // TODO: Mocking abschalten mit = new LocationDatabaseDao() //new LocationMockDao(); 
+public class LocationRESTResource {
+	private Map<String, Location> locations = new HashMap<>();
+	private LocationDao dao = new LocationDatabaseDao(); // TODO: Mocking abschalten mit = new LocationDatabaseDao() //new LocationMockDao(); 
 
 	/**
-	 * Mit der URL /locations/{id} einen Ort ermitteln
+	 * Mit der URL /locations/{id} eine Lokalitaet ermitteln
 	 * @param id ID des Orts
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 * @return Objekt mit Ortsdaten, falls die ID vorhanden ist
@@ -52,42 +50,42 @@ public class PlaceRESTResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Place findLocationById(@PathParam("id") Long id, 
+	public Location findLocationById(@PathParam("id") Long id, 
 			@Context UriInfo uriInfo) {
 
-		return dao.findPlaceById(id);
+		return dao.findLocationById(id);
 	}
 	
 	/**
-	 * Mit der URL /persons alle Person ermitteln
+	 * Mit der URL /locations alle Lokalitaeten ermitteln
 	 * 
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 * @return	Personliste
 	 * @throws Exception 
 	 */
 	@GET
-	public PlaceList findAlleLocations(@Context UriInfo uriInfo) {
+	public LocationList findAlleLocations(@Context UriInfo uriInfo) {
 		
-		PlaceList list = new PlaceList();
+		LocationList list = new LocationList();
 		list.setList(dao.selectAll());
 		return list;
 	}
 	
 	/**
-	 * Aktualisiert einen Ort
+	 * Aktualisiert eine Lokalitaet
 	 * 
 	 * @param person Das zu akualisierende Objekt
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 */
 	@PUT
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML})
-	public Response updateLocation(Place place,
+	public Response updateLocation(Location location,
 			@Context UriInfo uriInfo,
 			@Context HttpHeaders headers) {
 				// Vorhandenen Ort ermitteln
-				final Place origPlace = dao.findPlaceById(place.getId());
-				if (origPlace == null) {
-					final String msg ="KEINEN_ORT_GEFUNDEN_MIT_ID "+ place.getId();
+				final Location origLocation = dao.findLocationById(location.getId());
+				if (origLocation == null) {
+					final String msg ="KEINEN_ORT_GEFUNDEN_MIT_ID "+ location.getId();
 					throw new NotFoundException(msg);
 				}				
 //				LOGGER.tracef("%s", origKunde);
@@ -96,12 +94,12 @@ public class PlaceRESTResource {
 //				final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 				
 				// Update durchfuehren
-				dao.updatePlace(place);
+				dao.updateLocation(location);
 				return Response.created(uriInfo.getAbsolutePath()).build();
 	}
 	
 	/**
-	 * Eine neue Person abspeichern.
+	 * Eine neue Lokalitaet abspeichern.
 	 * 
 	 * @param person Das Person-Objekt
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
@@ -111,14 +109,14 @@ public class PlaceRESTResource {
 	 * @throws URISyntaxException 
 	 */
 	@POST
-    @XmlElement(type = Place.class)
+    @XmlElement(type = Location.class)
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
 	@Produces
-	public Response createPlace(Place place, 
+	public Response createLocation(Location location, 
 			@Context UriInfo uriInfo, 
 			@Context HttpHeaders headers)
 			{
-		dao.create(place.getStadtname(), place.getPlz());
+		dao.create(location.getBeschreibung());
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
@@ -130,15 +128,10 @@ public class PlaceRESTResource {
 	 * @param uriInfo Info-Objekt zur aufgerufenen URI
 	 */
 	@DELETE
-	@Path("/delete/{stadtname}/{plz}")
-	public void deleteLocation(@PathParam("stadtname") String stadtname,
-			@PathParam("plz") String plz) {
-		if(stadtname==null)
-		      throw new RuntimeException("Delete: Ort " + stadtname +  " not found");
-		if(plz==null)
-		      throw new RuntimeException("Delete: Ort mit plz " + plz +  " not found");
-		dao.deleteByStadtnameUndPlz(stadtname,plz);
+	@Path("/delete/{id}")
+	public void deleteLocation(@PathParam("id") Long id) {
+		if(id==null)
+		      throw new RuntimeException("Delete: Lokalitaet mit id: " +id + "nicht gefunden");
+		dao.deleteById(id);
 	}
-
-
 }
