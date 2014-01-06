@@ -35,11 +35,11 @@ import javax.xml.bind.annotation.XmlElements;
 
 import sun.rmi.runtime.Log;
 
-import com.meetInTheMiddle.serverApp.dao.location.LocationDao;
-import com.meetInTheMiddle.serverApp.dao.location.LocationDatabaseDao;
-import com.meetInTheMiddle.serverApp.domain.location.Location;
-import com.meetInTheMiddle.serverApp.domain.location.LocationList;
+import com.meetInTheMiddle.serverApp.dao.place.PlaceDao;
+import com.meetInTheMiddle.serverApp.dao.place.PlaceDatabaseDao;
 import com.meetInTheMiddle.serverApp.domain.person.Person;
+import com.meetInTheMiddle.serverApp.domain.place.Place;
+import com.meetInTheMiddle.serverApp.domain.place.PlaceList;
 import com.sun.jersey.api.NotFoundException;
 
 /**
@@ -50,10 +50,10 @@ import com.sun.jersey.api.NotFoundException;
 @Path("/locations")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
-public class LocationRESTResource {
+public class PlaceRESTResource {
 //	public Logger logger = new Logger(PersonenRESTResource.class.getName());
-	private Map<String, Location> locations = new HashMap<>();
-	private LocationDao dao = new LocationDatabaseDao(); // TODO: Mocking abschalten mit = new LocationDatabaseDao() //new LocationMockDao(); 
+	private Map<String, Place> locations = new HashMap<>();
+	private PlaceDao dao = new PlaceDatabaseDao(); // TODO: Mocking abschalten mit = new LocationDatabaseDao() //new LocationMockDao(); 
 
 	/**
 	 * Mit der URL /locations/{id} einen Ort ermitteln
@@ -64,7 +64,7 @@ public class LocationRESTResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Location findLocationById(@PathParam("id") Long id, 
+	public Place findLocationById(@PathParam("id") Long id, 
 			@Context UriInfo uriInfo) {
 
 		return dao.findLocationById(id);
@@ -78,9 +78,9 @@ public class LocationRESTResource {
 	 * @throws Exception 
 	 */
 	@GET
-	public LocationList findAlleLocations(@Context UriInfo uriInfo) {
+	public PlaceList findAlleLocations(@Context UriInfo uriInfo) {
 		
-		LocationList list = new LocationList();
+		PlaceList list = new PlaceList();
 		list.setList(dao.selectAll());
 		return list;
 	}
@@ -93,11 +93,11 @@ public class LocationRESTResource {
 	 */
 	@PUT
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML})
-	public Response updateLocation(Location location,
+	public Response updateLocation(Place location,
 			@Context UriInfo uriInfo,
 			@Context HttpHeaders headers) {
 				// Vorhandenen Ort ermitteln
-				final Location origLocation = dao.findLocationById(location.getId());
+				final Place origLocation = dao.findLocationById(location.getId());
 				if (origLocation == null) {
 					final String msg ="KEINEN_ORT_GEFUNDEN_MIT_ID "+ location.getId();
 					throw new NotFoundException(msg);
@@ -124,10 +124,10 @@ public class LocationRESTResource {
 	 */
 //	@Path("/create")
 	@POST
-    @XmlElement(type = Location.class)
+    @XmlElement(type = Place.class)
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
 	@Produces
-	public Response createLocation(Location location, 
+	public Response createLocation(Place location, 
 			@Context UriInfo uriInfo, 
 			@Context HttpHeaders headers)
 			{

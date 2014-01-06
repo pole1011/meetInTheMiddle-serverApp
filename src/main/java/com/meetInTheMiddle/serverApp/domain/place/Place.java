@@ -1,18 +1,18 @@
-package com.meetInTheMiddle.serverApp.domain.location;
+package com.meetInTheMiddle.serverApp.domain.place;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name="location")
-public class Location {
+public class Place {
 	
-	public Location(String stadtname, String plz) {
+	public Place(String stadtname, String plz) {
 		super();
 		this.stadtname = stadtname;
 		this.plz = plz;
 	}
-	public Location(){
+	public Place(){
 		
 	}
 @XmlElement
@@ -56,7 +56,7 @@ public boolean equals(Object obj) {
 		return false;
 	if (getClass() != obj.getClass())
 		return false;
-	Location other = (Location) obj;
+	Place other = (Place) obj;
 	if (id != other.id)
 		return false;
 	if (plz == null) {

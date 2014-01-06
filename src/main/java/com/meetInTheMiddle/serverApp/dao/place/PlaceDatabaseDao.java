@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.dao.location;
+package com.meetInTheMiddle.serverApp.dao.place;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.meetInTheMiddle.serverApp.domain.location.Location;
+import com.meetInTheMiddle.serverApp.domain.place.Place;
 import com.meetInTheMiddle.serverApp.util.Constants;
 
 /**
@@ -20,14 +20,14 @@ import com.meetInTheMiddle.serverApp.util.Constants;
  * @author Felix
  *
  */
-public class LocationDatabaseDao implements LocationDao{
+public class PlaceDatabaseDao implements PlaceDao{
 
-	public class LocationMapper implements RowMapper<Location> {
+	public class LocationMapper implements RowMapper<Place> {
 	     /*implement abstract method for declaring mapping
 	     *between POJO attributes and relational table attributes
 	     */
-	    public Location mapRow(ResultSet rs, int rowNum) throws SQLException {
-	        Location location=new Location();
+	    public Place mapRow(ResultSet rs, int rowNum) throws SQLException {
+	        Place location=new Place();
 	        location.setId(rs.getLong("ID"));
 	        location.setStadtname(rs.getString("STADTNAME"));
 	        location.setPlz(rs.getString("PLZ"));
@@ -43,7 +43,7 @@ public class LocationDatabaseDao implements LocationDao{
 	}
 	private JdbcTemplate jdbcTemplate;  
 	
-	public LocationDatabaseDao() {
+	public PlaceDatabaseDao() {
 		try {
 			Class.forName(oracle.jdbc.driver.OracleDriver.class.getName());
 		} catch (ClassNotFoundException e) {
@@ -61,10 +61,10 @@ public class LocationDatabaseDao implements LocationDao{
 	}
 	
 	@Override
-	public List<Location> selectAll() {
+	public List<Place> selectAll() {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
 		
-		List<Location> list = select.query("select * from ORT", new LocationMapper());
+		List<Place> list = select.query("select * from ORT", new LocationMapper());
 		Logger.getGlobal().fine("LocationDao.selectAll(): " + list.size() + " Orte gefunden.");
 		return list;
 	}
@@ -78,23 +78,23 @@ public class LocationDatabaseDao implements LocationDao{
 	}
 
 	@Override
-	public Location findLocationById(Long id) {
+	public Place findLocationById(Long id) {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
 
-		return (Location) select.queryForObject("Select * from ORT where id=?", 
+		return (Place) select.queryForObject("Select * from ORT where id=?", 
 				new Object[] { id },
 	            new LocationMapper());
 	}
 
 	@Override
-	public Location deleteByStadtnameUndPlz(String stadtname, String plz) {
+	public Place deleteByStadtnameUndPlz(String stadtname, String plz) {
 		JdbcTemplate delete = new JdbcTemplate(dataSource);
 		delete.update("Delete from ORT where stadtname= ? and plz=?", new Object[] {stadtname,plz});
 		return null;
 	}
 
 	@Override
-	public void updateLocation(Location location) {
+	public void updateLocation(Place location) {
 		JdbcTemplate update = new JdbcTemplate(dataSource);
 		update.update("update ort set stadtname=?, plz = ? where id= ?", new Object[] {location.getStadtname(),location.getPlz(),location.getId()});
 	}

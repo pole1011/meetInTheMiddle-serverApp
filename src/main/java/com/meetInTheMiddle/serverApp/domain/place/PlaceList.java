@@ -1,4 +1,4 @@
-package com.meetInTheMiddle.serverApp.domain.location;
+package com.meetInTheMiddle.serverApp.domain.place;
 
 import java.util.List;
 
@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name = "locations")
-public class LocationList {
+public class PlaceList {
 
 	@XmlElementRef
-	private List<Location> list;
+	private List<Place> list;
 
-	public List<Location> getList() {
+	public List<Place> getList() {
 		return list;
 	}
 
-	public void setList(List<Location> locations) {
+	public void setList(List<Place> locations) {
 		this.list = locations;
 	}
 	
