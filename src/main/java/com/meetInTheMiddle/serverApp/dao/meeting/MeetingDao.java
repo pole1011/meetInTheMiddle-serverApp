@@ -11,7 +11,7 @@ import com.meetInTheMiddle.serverApp.domain.meeting.Meeting;
  */
 public interface MeetingDao {
 	public List<Meeting> selectAll();
-	public void create(Long pers1_fk, Long pers2_fk, Date uhrzeit, Long lokalitaet_fk, Long ort_fk, int bewertung,Long verkehrsmittel_fk,String kommentar);
+	public void create(Long pers1_fk, Long pers2_fk, Date uhrzeit, Long lokalitaet_fk, Long ort_fk, int bewertung,Long verkehrsmittel_pers1_fk,String kommentar, Long verkehrsmittel_pers2_fk);
 	public Meeting findMeetingById(Long id);
 	public Meeting deleteById(Long id);
 	public void updateMeeting(Meeting meeting);

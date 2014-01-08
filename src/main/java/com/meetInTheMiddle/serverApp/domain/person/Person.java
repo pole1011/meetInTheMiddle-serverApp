@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="person")
 public class Person {
 	public Person(String firstName, String lastName, Date birthday,
-			String phone, String email, Long wohnort_fk, String password,
+			String phone, String email, String password,
 			String interests) {
 		super();
 		this.firstName = firstName;
@@ -17,7 +17,6 @@ public class Person {
 		this.birthday = birthday;
 		this.phone = phone;
 		this.email = email;
-		this.Wohnort_fk = wohnort_fk;
 		this.password = password;
 		this.interests = interests;
 	}
@@ -35,10 +34,6 @@ private Date birthday;
 private String phone;
 @XmlElement(required = true)
 private String email;
-@XmlElement
-private Long Wohnort_fk;
-@XmlElement
-private Long privateinstellungen_fk;
 @XmlElement(required=true)
 private String password;
 @XmlElement
@@ -79,22 +74,6 @@ public void setEmail(String email) {
 	this.email = email;
 }
 
-public Long getWohnort_fk() {
-	return Wohnort_fk;
-}
-
-public void setWohnort_fk(Long wohnort_fk) {
-	Wohnort_fk = wohnort_fk;
-}
-
-public Long getPrivateinstellungen_fk() {
-	return privateinstellungen_fk;
-}
-public void setPrivateinstellungen_fk(Long privateinstellungen_fk) {
-	this.privateinstellungen_fk = privateinstellungen_fk;
-}
-
-
 public String getPassword() {
 	return password;
 }
@@ -115,6 +94,27 @@ public void setId(Long id) {
 	this.id = id;
 }
 @Override
+public String toString() {
+	return "Person [id=" + id + ", firstName=" + firstName + ", lastName="
+			+ lastName + ", birthday=" + birthday + ", phone=" + phone
+			+ ", email=" + email +  ", password=" + password
+			+ ", interests=" + interests + "]";
+}
+@Override
+public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
+	result = prime * result + ((email == null) ? 0 : email.hashCode());
+	result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+	result = prime * result + ((id == null) ? 0 : id.hashCode());
+	result = prime * result + ((interests == null) ? 0 : interests.hashCode());
+	result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+	result = prime * result + ((password == null) ? 0 : password.hashCode());
+	result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+	return result;
+}
+@Override
 public boolean equals(Object obj) {
 	if (this == obj)
 		return true;
@@ -123,8 +123,6 @@ public boolean equals(Object obj) {
 	if (getClass() != obj.getClass())
 		return false;
 	Person other = (Person) obj;
-	if (Wohnort_fk != other.Wohnort_fk)
-		return false;
 	if (birthday == null) {
 		if (other.birthday != null)
 			return false;
@@ -139,6 +137,11 @@ public boolean equals(Object obj) {
 		if (other.firstName != null)
 			return false;
 	} else if (!firstName.equals(other.firstName))
+		return false;
+	if (id == null) {
+		if (other.id != null)
+			return false;
+	} else if (!id.equals(other.id))
 		return false;
 	if (interests == null) {
 		if (other.interests != null)
@@ -160,18 +163,8 @@ public boolean equals(Object obj) {
 			return false;
 	} else if (!phone.equals(other.phone))
 		return false;
-	if (privateinstellungen_fk != other.privateinstellungen_fk)
-		return false;
 	return true;
 }
-@Override
-public String toString() {
-	return "Person [id=" + id + ", firstName=" + firstName + ", lastName="
-			+ lastName + ", birthday=" + birthday + ", phone=" + phone
-			+ ", email=" + email + ", Wohnort_fk=" + Wohnort_fk
-			+ ", privateinstellungen_fk=" + privateinstellungen_fk
-			+ ", password=" + password
-			+ ", interests=" + interests + "]";
-}
+
 
 }

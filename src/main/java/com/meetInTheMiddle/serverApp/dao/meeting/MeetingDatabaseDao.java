@@ -36,8 +36,9 @@ public class MeetingDatabaseDao implements MeetingDao{
 	        meeting.setLokalitaet_fk(rs.getLong("LOKALITAET_FK"));
 	        meeting.setOrt_fk(rs.getLong("ORT_FK"));
 	        meeting.setBewertung(rs.getInt("BEWERTUNG"));
-	        meeting.setVerkehrsmittel_fk(rs.getLong("VERKEHRSMITTEL_FK"));
+	        meeting.setVerkehrsmittel_pers1_fk(rs.getLong("VERKEHRSMITTEL_PERS1_FK"));
 	        meeting.setKommentar(rs.getString("KOMMENTAR"));
+	        meeting.setVerkehrsmittel_pers2_fk(rs.getLong("VERKEHRSMITTEL_PERS2_FK"));
 	        return meeting;
 	    }
 	}
@@ -79,11 +80,11 @@ public class MeetingDatabaseDao implements MeetingDao{
 	@Override
 	public void create(Long pers1_fk, Long pers2_fk, Date uhrzeit,
 			Long lokalitaet_fk, Long ort_fk, int bewertung,
-			Long verkehrsmittel_fk, String kommentar) {
+			Long verkehrsmittel_pers1_fk, String kommentar, Long verkehrsmittel_pers2_fk) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
 		insert.update(
-				"INSERT INTO TREFFEN (ID,PERS1_FK,PERS2_FK,UHRZEIT,LOKALITAET_FK,ORT_FK,BEWERTUNG,VERKEHRSMITTEL_FK,KOMMENTAR) VALUES(SEQUENCE_TREFFEN_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
-				new Object[] { pers1_fk, pers2_fk,uhrzeit,lokalitaet_fk,ort_fk,bewertung,verkehrsmittel_fk,kommentar});
+				"INSERT INTO TREFFEN (ID,PERS1_FK,PERS2_FK,UHRZEIT,LOKALITAET_FK,ORT_FK,BEWERTUNG,VERKEHRSMITTEL_PERS1_FK,KOMMENTAR, VERKEHRSMITTEL_PERS2_FK) VALUES(SEQUENCE_TREFFEN_PK.NEXTVAL,?,?,?,?,?,?,?,?,?)",
+				new Object[] { pers1_fk, pers2_fk,uhrzeit,lokalitaet_fk,ort_fk,bewertung,verkehrsmittel_pers1_fk,kommentar,verkehrsmittel_pers2_fk});
 	}
 
 	@Override
@@ -105,8 +106,8 @@ public class MeetingDatabaseDao implements MeetingDao{
 	@Override
 	public void updateMeeting(Meeting meeting) {
 		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update("update TREFFEN set PERS1_FK = ?,PERS2_FK = ?,UHRZEIT = ?,LOKALITAET_FK = ?,ORT_FK = ?,BEWERTUNG = ?,VERKEHRSMITTEL_FK = ?, KOMMENTAR = ? where id= ?", 
-				new Object[] {meeting.getPers1_fk(),meeting.getPers2_fk(),meeting.getUhrzeit(),meeting.getLokalitaet_fk(),meeting.getOrt_fk(),meeting.getBewertung(),meeting.getVerkehrsmittel_fk(),meeting.getKommentar(),meeting.getId()});
+		update.update("update TREFFEN set PERS1_FK = ?,PERS2_FK = ?,UHRZEIT = ?,LOKALITAET_FK = ?,ORT_FK = ?,BEWERTUNG = ?,VERKEHRSMITTEL_PERS1_FK = ?, KOMMENTAR = ?, VERKEHRSMITTEL_PERS2_FK where id= ?", 
+				new Object[] {meeting.getPers1_fk(),meeting.getPers2_fk(),meeting.getUhrzeit(),meeting.getLokalitaet_fk(),meeting.getOrt_fk(),meeting.getBewertung(),meeting.getVerkehrsmittel_pers1_fk(),meeting.getKommentar(),meeting.getVerkehrsmittel_pers2_fk(),meeting.getId()});
 	}
 
 }

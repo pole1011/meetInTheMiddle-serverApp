@@ -13,9 +13,9 @@ public class PersonMockDao implements PersonDao {
 	private Map<String, Person> persons = new HashMap<>();
 	
 	public PersonMockDao() {
-		persons.put("dieter@furgison.de", new Person("Dieter", "Furgison", new Date(new java.util.Date().getTime()), null, "dieter@furgison.de", null, "test", null));
-		persons.put("dasfdf@xscvcsd.de", new Person("Ralf", "Bauer", new Date(new java.util.Date().getTime()), null, "dasfdf@xscvcsd.de", null, null, null));
-		persons.put("sdafsf@ycsafadf.de", new Person("Leo", "Podiev", new Date(new java.util.Date().getTime()), null, "sdafsf@ycsafadf.de", null, null, null));
+		persons.put("dieter@furgison.de", new Person("Dieter", "Furgison", new Date(new java.util.Date().getTime()), null, "dieter@furgison.de",  "test", null));
+		persons.put("dasfdf@xscvcsd.de", new Person("Ralf", "Bauer", new Date(new java.util.Date().getTime()), null, "dasfdf@xscvcsd.de", null,  null));
+		persons.put("sdafsf@ycsafadf.de", new Person("Leo", "Podiev", new Date(new java.util.Date().getTime()), null, "sdafsf@ycsafadf.de", null,  null));
 	}
 
 	@Override
@@ -27,11 +27,11 @@ public class PersonMockDao implements PersonDao {
 	public void create(String firstName, String lastName, Date birthday,
 			String phone, String email, String password,
 			String interests) {
-		persons.put(email, new Person(firstName, lastName, birthday, phone, email,  null, password, interests)); // TODO: kontaktliste_fk = 0???
+		persons.put(email, new Person(firstName, lastName, birthday, phone, email,   password, interests)); // TODO: kontaktliste_fk = 0???
 	}
 	
 	public void create(Person person){
-		persons.put(person.getEmail(), new Person(person.getFirstName(), person.getLastName(), person.getBirthday(), person.getPhone(), person.getEmail(), null, person.getPassword(), person.getInterests()));
+		persons.put(person.getEmail(), new Person(person.getFirstName(), person.getLastName(), person.getBirthday(), person.getPhone(), person.getEmail(), person.getPassword(), person.getInterests()));
 	}
 
 	@Override

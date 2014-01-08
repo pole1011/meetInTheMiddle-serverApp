@@ -137,7 +137,7 @@ public class MeetingRESTResource {
 			@Context HttpHeaders headers)
 			{
 		System.out.println(meeting);
-		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_fk(),meeting.getKommentar());
+		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_pers1_fk(),meeting.getKommentar(),meeting.getVerkehrsmittel_pers2_fk());
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
