@@ -69,6 +69,14 @@ public class PersonenRESTResource {
 		return dao.findPersonById(id);
 	}
 	
+	@GET
+	@Path("/{firstname}/{lastname}")
+	@Produces(MediaType.APPLICATION_XML)
+	public Person findPersonByFirstLastName(@PathParam("firstname") String firstName, @PathParam("lastname") String lastName,
+			@Context UriInfo uriInfo) {
+		return dao.findPersonByFirstLastName(firstName, lastName);
+	}
+	
 	/**
 	 * Mit der URL /persons/{id}/contacts alle Kontakte zu einer Person ermitteln.
 	 * @param id ID der Person
@@ -134,12 +142,12 @@ public class PersonenRESTResource {
 	 * @return
 	 * @throws URISyntaxException 
 	 */
-	@Path("/contacts")
+	@Path("/contacts/{firstid}/{lastid}")
 	@POST
     @XmlElement(type = Person.class)
 	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
 	@Produces
-	public Response createContact(Long person_1_id, Long person_2_id,
+	public Response createContact(@PathParam("firstid") Long person_1_id, @PathParam("lastid") Long person_2_id,
 			@Context UriInfo uriInfo, 
 			@Context HttpHeaders headers)
 			{

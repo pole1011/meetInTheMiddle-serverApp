@@ -82,14 +82,14 @@ public class PersonDatabaseDao implements PersonDao {
 			String password, String interests) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
 
-SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+SimpleDateFormat birthday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		try {
 			 test = birthday.parse(test.toString());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(test.toString());
+		System.out.println(birthday.toString());
 		insert.update(
 				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?)",
 				new Object[] { firstName, lastName, test, phone, email, 
@@ -104,7 +104,13 @@ SimpleDateFormat birthday = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 						new PersonMapper());
 	}
 
-
+	@Override
+	public Person findPersonByFirstLastName(String firstName, String lastName) {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		return (Person) select.queryForObject("Select * from Person where vorname=? AND nachname=?", 
+				new Object[] { firstName,lastName },
+	            new PersonMapper());
+	}
 
 	@Override
 	public Person findPersonById(Long id) {

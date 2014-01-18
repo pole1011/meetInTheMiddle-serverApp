@@ -19,4 +19,5 @@ public interface PersonDao {
 	void updatePerson(Person person);
 	public void createContact(Long person_1_id, Long person_2_id);
 	public List<Person> findContactsById(Long id);
+	Person findPersonByFirstLastName(String firstName, String lastName);
 }
