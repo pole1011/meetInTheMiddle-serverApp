@@ -33,7 +33,6 @@
 	<artifactId>postgresql</artifactId>
 	<version>9.3-1100-jdbc41</version>
 </dependency>
-            
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
@@ -79,14 +78,6 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>3.2.5.RELEASE</version>
 		</dependency>
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-   			<version>3.0.1</version>
-   			<scope>provided</scope>
-		</dependency>
-
-
 	</dependencies>
 
 	<build>
