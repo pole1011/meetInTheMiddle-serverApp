@@ -29,6 +29,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+	<groupId>org.postgresql</groupId>
+	<artifactId>postgresql</artifactId>
+	<version>9.3-1100-jdbc41</version>
+</dependency>
+            
+		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
 			<version>1.18</version>
@@ -95,11 +101,11 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<configuration>
-					<url>http://10.84.41.74:8080/manager/text</url>
+					<url>http://185.16.61.87:8080/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/serverApp</path>
-					<username>admin</username>
-					<password>admin</password>
+					<username>tomcat</username>
+					<password>tomcat</password>
 					<warFile>target/serverApp.war</warFile>
 				</configuration>
 			</plugin>

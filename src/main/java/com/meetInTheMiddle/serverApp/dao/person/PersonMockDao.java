@@ -70,4 +70,10 @@ public class PersonMockDao implements PersonDao {
 		return null;
 	}
 
+	@Override
+	public Person findPersonByFirstLastName(String firstName, String lastName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
