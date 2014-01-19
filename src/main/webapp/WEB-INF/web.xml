@@ -14,13 +14,27 @@
 			<param-value>com.meetInTheMiddle.serverApp.rest</param-value>
 		</init-param>
 		<init-param>
-  <param-name>com.sun.jersey.config.feature.TracePerRequest</param-name>
-  <param-value>true</param-value>      
-</init-param>
+  			<param-name>com.sun.jersey.config.feature.TracePerRequest</param-name>
+  			<param-value>true</param-value>      
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>Jersey REST Service</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
+		<servlet>
+		<servlet-name>CMBroadcast</servlet-name>
+		<servlet-class>com.meetInTheMiddle.serverApp.GCMBroadcast</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+		<servlet-mapping>
+			<servlet-name>Jersey REST Service</servlet-name>
+			<url-pattern>/rest/*</url-pattern>
+		</servlet-mapping>
+	
+
+		<servlet-mapping>
+			<servlet-name>GCMBroadcast</servlet-name>
+			<url-pattern>/GCMBroadcast</url-pattern>
+		</servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>	
 </web-app>
