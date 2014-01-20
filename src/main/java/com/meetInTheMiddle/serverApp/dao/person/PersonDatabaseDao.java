@@ -38,6 +38,7 @@ public class PersonDatabaseDao implements PersonDao {
 	        person.setEmail(rs.getString("EMAIL"));
 	        person.setPassword(rs.getString("PASSWORD"));
 	        person.setInterests(rs.getString("INTERESSEN"));
+	        person.setAndroidId(rs.getString("ANDROID_ID"));
 	        return person;
 	    }
 	}
@@ -79,7 +80,7 @@ public class PersonDatabaseDao implements PersonDao {
 	}
 
 	public void create(String firstName, String lastName,Date test, String phone, String email,
-			String password, String interests) {
+			String password, String interests, String androidId) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
 
 SimpleDateFormat birthday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -91,9 +92,9 @@ SimpleDateFormat birthday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		}
 		System.out.println(birthday.toString());
 		insert.update(
-				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,PASSWORD,INTERESSEN) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?)",
+				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,PASSWORD,INTERESSEN, androidId) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
 				new Object[] { firstName, lastName, test, phone, email, 
-						password, interests });
+						password, interests, androidId });
 	}
 
 	@Override
