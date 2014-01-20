@@ -92,7 +92,7 @@ SimpleDateFormat birthday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		}
 		System.out.println(birthday.toString());
 		insert.update(
-				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,PASSWORD,INTERESSEN, androidId) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
+				"INSERT INTO PERSON (ID, VORNAME, NACHNAME,GEBURTSDATUM,TELEFONNR,EMAIL,PASSWORD,INTERESSEN, ANDROID_ID) VALUES(SEQUENCE_PERSON_PK.NEXTVAL,?,?,?,?,?,?,?,?)",
 				new Object[] { firstName, lastName, test, phone, email, 
 						password, interests, androidId });
 	}

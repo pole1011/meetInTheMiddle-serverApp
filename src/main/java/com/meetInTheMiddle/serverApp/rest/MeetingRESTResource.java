@@ -5,6 +5,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -40,6 +42,9 @@ import sun.rmi.runtime.Log;
 
 
 
+
+
+import com.meetInTheMiddle.serverApp.GCMBroadcast;
 import com.meetInTheMiddle.serverApp.dao.meeting.MeetingDao;
 import com.meetInTheMiddle.serverApp.dao.meeting.MeetingDatabaseDao;
 import com.meetInTheMiddle.serverApp.domain.meeting.Meeting;
@@ -125,6 +130,8 @@ public class MeetingRESTResource {
 	 * @param headers
 	 * @return 
 	 * @return
+	 * @throws IOException 
+	 * @throws ServletException 
 	 * @throws URISyntaxException 
 	 */
 //	@Path("/create")
@@ -134,10 +141,12 @@ public class MeetingRESTResource {
 	@Produces
 	public Response createMeeting(Meeting meeting, 
 			@Context UriInfo uriInfo, 
-			@Context HttpHeaders headers)
+			@Context HttpHeaders headers) throws ServletException, IOException
 			{
 		System.out.println(meeting);
-		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_pers1_fk(),meeting.getKommentar(),meeting.getVerkehrsmittel_pers2_fk());
+		GCMBroadcast gcm = new GCMBroadcast(meeting.getaIdEmpfaenger());
+		gcm.doPost(meeting.getMessage());
+		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_pers1_fk(),meeting.getKommentar(),meeting.getVerkehrsmittel_pers2_fk(),meeting.getaIdSender(),meeting.getaIdEmpfaenger());
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}

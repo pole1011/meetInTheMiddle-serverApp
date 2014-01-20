@@ -42,162 +42,183 @@ import com.meetInTheMiddle.serverApp.domain.person.PersonList;
 import com.sun.jersey.api.NotFoundException;
 
 /**
- * Interface fuer dieRessource, die ueber eine URL erreichbar ist und 
- * auf welcher verschiedene Operationen durchgefuehrt werden koennen sollen.
+ * Interface fuer dieRessource, die ueber eine URL erreichbar ist und auf
+ * welcher verschiedene Operationen durchgefuehrt werden koennen sollen.
  * 
  */
 @Path("/persons")
 @Produces({ APPLICATION_XML, TEXT_XML, APPLICATION_JSON })
 @Consumes
 public class PersonenRESTResource {
-//	public Logger logger = new Logger(PersonenRESTResource.class.getName());
+	// public Logger logger = new Logger(PersonenRESTResource.class.getName());
 	private Map<String, Person> persons = new HashMap<>();
-	private PersonDao dao = new PersonDatabaseDao(); // TODO: Mocking abschalten mit = new PersonDatabaseDao() //new PersonMockDao(); 
+	private PersonDao dao = new PersonDatabaseDao(); // TODO: Mocking abschalten
+														// mit = new
+														// PersonDatabaseDao()
+														// //new
+														// PersonMockDao();
 
 	/**
 	 * Mit der URL /persons/{id} eine Person ermitteln
-	 * @param id ID der Person
-	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * 
+	 * @param id
+	 *            ID der Person
+	 * @param uriInfo
+	 *            Info-Objekt zur aufgerufenen URI
 	 * @return Objekt mit Personendaten, falls die ID vorhanden ist
 	 */
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Person findPersonById(@PathParam("id") Long id, 
+	public Person findPersonById(@PathParam("id") Long id,
 			@Context UriInfo uriInfo) {
 		return dao.findPersonById(id);
 	}
-	
+
 	@GET
 	@Path("/{firstname}/{lastname}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Person findPersonByFirstLastName(@PathParam("firstname") String firstName, @PathParam("lastname") String lastName,
-			@Context UriInfo uriInfo) {
+	public Person findPersonByFirstLastName(
+			@PathParam("firstname") String firstName,
+			@PathParam("lastname") String lastName, @Context UriInfo uriInfo) {
 		return dao.findPersonByFirstLastName(firstName, lastName);
 	}
-	
+
 	/**
-	 * Mit der URL /persons/{id}/contacts alle Kontakte zu einer Person ermitteln.
-	 * @param id ID der Person
-	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * Mit der URL /persons/{id}/contacts alle Kontakte zu einer Person
+	 * ermitteln.
+	 * 
+	 * @param id
+	 *            ID der Person
+	 * @param uriInfo
+	 *            Info-Objekt zur aufgerufenen URI
 	 * @return Objekt mit Personendaten, falls die ID vorhanden ist
 	 */
 	@GET
 	@Path("{id:[1-9][0-9]*}/contacts")
 	@Produces(MediaType.APPLICATION_XML)
-	public PersonList findContactsById(@PathParam("id") Long id, 
+	public PersonList findContactsById(@PathParam("id") Long id,
 			@Context UriInfo uriInfo) {
 		PersonList list = new PersonList();
 		list.setList(dao.findContactsById(id));
 		return list;
 	}
-	
+
 	/**
 	 * Mit der URL /persons alle Person ermitteln
 	 * 
-	 * @param uriInfo Info-Objekt zur aufgerufenen URI
-	 * @return	Personliste
+	 * @param uriInfo
+	 *            Info-Objekt zur aufgerufenen URI
+	 * @return Personliste
 	 */
 	@GET
 	public PersonList findAllePersonen(@Context UriInfo uriInfo,
 			@QueryParam("name") @DefaultValue("") String name) {
-		
+
 		PersonList list = new PersonList();
 		list.setList(dao.selectAll());
 		return list;
 	}
-	
+
 	/**
 	 * Eine neue Person abspeichern.
 	 * 
-	 * @param person Das Person-Objekt
-	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * @param person
+	 *            Das Person-Objekt
+	 * @param uriInfo
+	 *            Info-Objekt zur aufgerufenen URI
 	 * @param headers
-	 * @return 
 	 * @return
-	 * @throws URISyntaxException 
+	 * @return
+	 * @throws URISyntaxException
 	 */
-//	@Path("/create")
+	// @Path("/create")
 	@POST
-    @XmlElement(type = Person.class)
-	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
+	@XmlElement(type = Person.class)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.TEXT_XML,
+			MediaType.APPLICATION_JSON })
 	@Produces
-	public Response createPerson(Person person, 
-			@Context UriInfo uriInfo, 
-			@Context HttpHeaders headers)
-			{
-		System.out.println(person.getFirstName() + person.getLastName() + person.getBirthday() + person.getPhone() + person.getEmail() + person.getPassword() + person.getInterests());
-		dao.create(person.getFirstName(), person.getLastName(),  person.getBirthday(), person.getPhone(), person.getEmail(), person.getPassword(), person.getInterests(),person.getAndroidId());
+	public Response createPerson(Person person, @Context UriInfo uriInfo,
+			@Context HttpHeaders headers) {
+		System.out.println(person.getAndroidId());
+		System.out.println(person.toString());
+		dao.create(person.getFirstName(), person.getLastName(),person.getBirthday(), person.getPhone(), person.getEmail(),person.getPassword(), person.getInterests(),person.getAndroidId());
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
-	
+
 	/**
 	 * Einen neuen Kontakt abspeichern.
 	 * 
-	 * @param person Das Person-Objekt
-	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * @param person
+	 *            Das Person-Objekt
+	 * @param uriInfo
+	 *            Info-Objekt zur aufgerufenen URI
 	 * @param headers
-	 * @return 
 	 * @return
-	 * @throws URISyntaxException 
+	 * @return
+	 * @throws URISyntaxException
 	 */
 	@Path("/contacts/{firstid}/{lastid}")
 	@POST
-    @XmlElement(type = Person.class)
-	@Consumes({MediaType.APPLICATION_XML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON })
+	@XmlElement(type = Person.class)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.TEXT_XML,
+			MediaType.APPLICATION_JSON })
 	@Produces
-	public Response createContact(@PathParam("firstid") Long person_1_id, @PathParam("lastid") Long person_2_id,
-			@Context UriInfo uriInfo, 
-			@Context HttpHeaders headers)
-			{
-		dao.createContact(person_1_id,person_2_id);
+	public Response createContact(@PathParam("firstid") Long person_1_id,
+			@PathParam("lastid") Long person_2_id, @Context UriInfo uriInfo,
+			@Context HttpHeaders headers) {
+		dao.createContact(person_1_id, person_2_id);
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
-	
+
 	/**
 	 * Aktualisiert eine Person
 	 * 
-	 * @param person Das zu akualisierende Objekt
-	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * @param person
+	 *            Das zu akualisierende Objekt
+	 * @param uriInfo
+	 *            Info-Objekt zur aufgerufenen URI
 	 */
 	@PUT
-	@Consumes({MediaType.TEXT_XML, MediaType.APPLICATION_XML})
-	public Response updatePerson(Person person,
-			@Context UriInfo uriInfo,
+	@Consumes({ MediaType.TEXT_XML, MediaType.APPLICATION_XML })
+	public Response updatePerson(Person person, @Context UriInfo uriInfo,
 			@Context HttpHeaders headers) {
 		// Vorhandene Person ermitteln
-				final Person origPerson = dao.findPersonById(person.getId());
-				if (origPerson == null) {
-					final String msg = "KEINE_PERSON_GEFUNDEN_MIT_ID "+ person.getId();
-					throw new NotFoundException(msg);
-				}
-				
-//				LOGGER.tracef("%s", origKunde);
+		final Person origPerson = dao.findPersonById(person.getId());
+		if (origPerson == null) {
+			final String msg = "KEINE_PERSON_GEFUNDEN_MIT_ID " + person.getId();
+			throw new NotFoundException(msg);
+		}
 
-//				final List<Locale> locales = headers.getAcceptableLanguages();
-//				final Locale locale = locales.isEmpty() ? Locale.getDefault() : locales.get(0);
-				
-				// Update durchfuehren
-				System.out.println(person);
-				System.out.println(origPerson);
-				dao.updatePerson(person);
-				return Response.created(uriInfo.getAbsolutePath()).build();
+		// LOGGER.tracef("%s", origKunde);
+
+		// final List<Locale> locales = headers.getAcceptableLanguages();
+		// final Locale locale = locales.isEmpty() ? Locale.getDefault() :
+		// locales.get(0);
+
+		// Update durchfuehren
+		System.out.println(person);
+		System.out.println(origPerson);
+		dao.updatePerson(person);
+		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
-	
+
 	/**
 	 * Loescht eine Person unter angabe der E-Mail-Adresse.
 	 * 
-	 * @param id ID des Persons
-	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * @param id
+	 *            ID des Persons
+	 * @param uriInfo
+	 *            Info-Objekt zur aufgerufenen URI
 	 */
 	@DELETE
 	@Path("/{email}")
 	public void deletePerson(@PathParam("email") String email) {
-		if(email==null)
-		      throw new RuntimeException("Delete: Person with " + email +  " not found");
+		if (email == null)
+			throw new RuntimeException("Delete: Person with " + email
+					+ " not found");
 		dao.deleteByEmail(email);
 	}
-
 
 }

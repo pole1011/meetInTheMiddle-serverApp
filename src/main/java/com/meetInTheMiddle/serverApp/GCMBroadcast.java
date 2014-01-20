@@ -32,12 +32,12 @@ public class GCMBroadcast extends HttpServlet {
     // This array will hold all the registration ids used to broadcast a message.
     // for this demo, it will only have the DROID_BIONIC id that was captured
     // when we ran the Android client app through Eclipse.
-    private List<String> androidTargets = new ArrayList<String>();
+    List<String> androidTargets = new ArrayList<String>();
         
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GCMBroadcast() {
+    public GCMBroadcast(String DROID_BIONIC) {
          
         super();
  
@@ -49,15 +49,18 @@ public class GCMBroadcast extends HttpServlet {
      
     // This doPost() method is called from the form in our index.jsp file.
     // It will broadcast the passed "Message" value.
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(String usermessage) throws ServletException, IOException {
+//    		HttpServletRequest request, HttpServletResponse response
          
         // We'll collect the "CollapseKey" and "Message" values from our JSP page
         String collapseKey = "";
-        String userMessage = "";
+        String userMessage = usermessage;
          
         try {
-            userMessage = request.getParameter("Message");
-            collapseKey = request.getParameter("CollapseKey");
+            userMessage = usermessage;
+//            		request.getParameter("Message");
+            collapseKey = "trololol";
+//            request.getParameter("CollapseKey");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -103,10 +106,10 @@ public class GCMBroadcast extends HttpServlet {
  
         // We'll pass the CollapseKey and Message values back to index.jsp, only so
         // we can display it in our form again.
-        request.setAttribute("CollapseKey", collapseKey);
-        request.setAttribute("Message", userMessage);
+//        request.setAttribute("CollapseKey", collapseKey);
+//        request.setAttribute("Message", userMessage);
          
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+//        request.getRequestDispatcher("index.jsp").forward(request, response);
                  
     }
  
