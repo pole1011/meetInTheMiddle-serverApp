@@ -123,7 +123,8 @@ SimpleDateFormat birthday = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	@Override
 	public void updatePerson(Person person) {
 		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update("update Person set VORNAME=?, NACHNAME = ?, GEBURTSDATUM = ?, TELEFONNR = ?, EMAIL = ?, PASSWORD = ?, INTERESSEN = ? where id= ?", new Object[] {person.getFirstName(),person.getLastName(),person.getBirthday(),person.getPhone(),person.getEmail(),person.getPassword(),person.getInterests(),person.getId()});
+		update.update("update Person set VORNAME=?, NACHNAME = ?, GEBURTSDATUM = ?, TELEFONNR = ?, EMAIL = ?, INTERESSEN = ? where id= ?", 
+				new Object[] {person.getFirstName(),person.getLastName(),person.getBirthday(),person.getPhone(),person.getEmail(),person.getInterests(),person.getId()});
 	}
 
 	@Override

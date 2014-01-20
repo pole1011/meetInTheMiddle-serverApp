@@ -20,6 +20,17 @@ public class Person {
 		this.password = password;
 		this.interests = interests;
 	}
+	public Person(String firstName, String lastName, Date birthday,
+			String phone, String email,
+			String interests) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.birthday = birthday;
+		this.phone = phone;
+		this.email = email;
+		this.interests = interests;
+	}
 	public Person() {
 	}
 @XmlElement
@@ -34,7 +45,7 @@ private Date birthday;
 private String phone;
 @XmlElement(required = true)
 private String email;
-@XmlElement(required=true)
+@XmlElement(required=false)
 private String password;
 @XmlElement
 private String interests;
