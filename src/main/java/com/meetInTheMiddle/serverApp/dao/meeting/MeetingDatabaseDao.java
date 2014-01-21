@@ -82,11 +82,11 @@ public class MeetingDatabaseDao implements MeetingDao{
 	@Override
 	public void create(Long pers1_fk, Long pers2_fk, Date uhrzeit,
 			Long lokalitaet_fk, Long ort_fk, int bewertung,
-			Long verkehrsmittel_pers1_fk, String kommentar, Long verkehrsmittel_pers2_fk, String aIdEmpfaenger, String aIdSender) {
+			Long verkehrsmittel_pers1_fk, String kommentar, Long verkehrsmittel_pers2_fk, String aIdEmpfaenger, String aIdSender, String locationPers1, String locationPers2) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
 		insert.update(
-				"INSERT INTO TREFFEN (ID,PERS1_FK,PERS2_FK,UHRZEIT,LOKALITAET_FK,ORT_FK,BEWERTUNG,VERKEHRSMITTEL_PERS1_FK,KOMMENTAR, VERKEHRSMITTEL_PERS2_FK, AID_SENDER, AID_EMPFAENGER) VALUES(SEQUENCE_TREFFEN_PK.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)",
-				new Object[] { pers1_fk, pers2_fk,uhrzeit,lokalitaet_fk,ort_fk,bewertung,verkehrsmittel_pers1_fk,kommentar,verkehrsmittel_pers2_fk, aIdEmpfaenger, aIdSender});
+				"INSERT INTO TREFFEN (ID,PERS1_FK,PERS2_FK,UHRZEIT,LOKALITAET_FK,ORT_FK,BEWERTUNG,VERKEHRSMITTEL_PERS1_FK,KOMMENTAR, VERKEHRSMITTEL_PERS2_FK, AID_SENDER, AID_EMPFAENGER, LOCATION_PERS1, LOCATION_PERS2) VALUES(SEQUENCE_TREFFEN_PK.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+				new Object[] { pers1_fk, pers2_fk,uhrzeit,lokalitaet_fk,ort_fk,bewertung,verkehrsmittel_pers1_fk,kommentar,verkehrsmittel_pers2_fk, aIdEmpfaenger, aIdSender, locationPers1, locationPers2});
 	}
 
 	@Override

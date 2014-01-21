@@ -146,7 +146,7 @@ public class MeetingRESTResource {
 		System.out.println(meeting);
 		GCMBroadcast gcm = new GCMBroadcast(meeting.getaIdEmpfaenger());
 		gcm.doPost(meeting.getMessage());
-		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_pers1_fk(),meeting.getKommentar(),meeting.getVerkehrsmittel_pers2_fk(),meeting.getaIdSender(),meeting.getaIdEmpfaenger());
+		dao.create(meeting.getPers1_fk(), meeting.getPers2_fk(), meeting.getUhrzeit(), meeting.getLokalitaet_fk(), meeting.getOrt_fk(), meeting.getBewertung(), meeting.getVerkehrsmittel_pers1_fk(),meeting.getKommentar(),meeting.getVerkehrsmittel_pers2_fk(),meeting.getaIdSender(),meeting.getaIdEmpfaenger(),meeting.getLocationPers1(),meeting.getLocationPers2());
 
 		return Response.created(uriInfo.getAbsolutePath()).build();
 	}
