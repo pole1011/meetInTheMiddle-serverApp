@@ -48,27 +48,27 @@ public class Meeting {
 
 	@XmlElement
 	private Long id;
-	@XmlElement(required=true)
+	@XmlElement(required=false)
 	private Long pers1_fk;
-	@XmlElement(required=true)
+	@XmlElement(required=false)
 	private Long pers2_fk;
-	@XmlElement(required=true)
+	@XmlElement(required=false)
 	private Date uhrzeit;
-	@XmlElement
+	@XmlElement(required=false)
 	private Long lokalitaet_fk;
-	@XmlElement(required = true)
+	@XmlElement(required = false)
 	private Long ort_fk;
-	@XmlElement
+	@XmlElement(required = false)
 	private int bewertung;
-	@XmlElement
+	@XmlElement(required = false)
 	private Long verkehrsmittel_pers1_fk;
-	@XmlElement
+	@XmlElement(required = false)
 	private String kommentar;
-	@XmlElement
+	@XmlElement(required = false)
 	private Long verkehrsmittel_pers2_fk;
-	@XmlElement
+	@XmlElement(required = false)
 	private String aIdSender;
-	@XmlElement
+	@XmlElement(required = false)
 	private String aIdEmpfaenger;
 	@XmlElement(required = false)
 	private String message;

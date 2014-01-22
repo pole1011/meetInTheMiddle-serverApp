@@ -8,6 +8,7 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 import sun.rmi.runtime.Log;
+
 
 
 
@@ -87,11 +89,58 @@ public class MeetingRESTResource {
 	 * @throws Exception 
 	 */
 	@GET
-	public MeetingList findAlleMeetings(@Context UriInfo uriInfo,
-			@QueryParam("stadtname") @DefaultValue("") String name) {
+	public MeetingList findAlleMeetings(@Context UriInfo uriInfo) {
 		
 		MeetingList list = new MeetingList();
 		list.setList(dao.selectAll());
+		return list;
+	}
+	
+	/**
+	 * Mit der URL /meetings alle Treffen ermitteln
+	 * 
+	 * @param uriInfo Info-Objekt zur aufgerufenen URI
+	 * @return	Treffenliste
+	 * @throws Exception 
+	 */
+	@GET
+	@Path("pers1_fk/{id:[1-9][0-9]*}")
+	public MeetingList findMeetingByPers1_FK(@Context UriInfo uriInfo,
+			@PathParam("id") Long id) {
+		
+		MeetingList list = new MeetingList();
+		list.setList(dao.selectMeetingByPers1Fk(id));
+		return list;
+	}
+	
+	@GET
+	@Path("pers1_fk/{id:[1-9][0-9]*}/{hour:[0-2][0-9]*}/{minute:[0-5][0-9]*}")
+	public Meeting findMeetingByPers1_FK_Uhrzeit(@Context UriInfo uriInfo,
+			@PathParam("id") Long id,
+			@PathParam("hour") int hour,
+			@PathParam("minute") int minute
+			) {
+		return dao.selectMeetingByPers1Fk_uhrzeit(id,hour,minute);
+	}
+	
+	@GET
+	@Path("pers2_fk/{id:[1-9][0-9]*}/{hour:[0-2][0-9]*}/{minute:[0-5][0-9]*}")
+	public Meeting findMeetingByPers2_FK_Uhrzeit(@Context UriInfo uriInfo,
+			@PathParam("id") Long id,
+			@PathParam("hour") int hour,
+			@PathParam("minute") int minute
+			) {
+		return dao.selectMeetingByPers2Fk_uhrzeit(id,hour,minute);
+
+	}
+	
+	@GET
+	@Path("pers2_fk/{id:[1-9][0-9]*}")
+	public MeetingList findMeetingByPers2_FK(@Context UriInfo uriInfo,
+			@PathParam("id") Long id) {
+		
+		MeetingList list = new MeetingList();
+		list.setList(dao.selectMeetingByPers2Fk(id));
 		return list;
 	}
 	

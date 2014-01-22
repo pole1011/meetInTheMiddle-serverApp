@@ -15,4 +15,9 @@ public interface MeetingDao {
 	public Meeting findMeetingById(Long id);
 	public Meeting deleteById(Long id);
 	public void updateMeeting(Meeting meeting);
+	public List<Meeting> selectMeetingByPers1Fk(Long id);
+	public List<Meeting> selectMeetingByPers2Fk(Long id);
+	public Meeting selectMeetingByPers1Fk_uhrzeit(Long id, int hours, int minutes);
+	Meeting selectMeetingByPers2Fk_uhrzeit(Long id, int hours, int minutes);
+
 }

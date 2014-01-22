@@ -2,7 +2,10 @@ package com.meetInTheMiddle.serverApp.dao.meeting;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,40 +22,44 @@ import com.meetInTheMiddle.serverApp.util.Constants;
 /**
  * 
  * @author Felix
- *
+ * 
  */
-public class MeetingDatabaseDao implements MeetingDao{
-	
+public class MeetingDatabaseDao implements MeetingDao {
+
 	public class MeetingMapper implements RowMapper<Meeting> {
-	     /*implement abstract method for declaring mapping
-	     *between POJO attributes and relational table attributes
-	     */
-	    public Meeting mapRow(ResultSet rs, int rowNum) throws SQLException {
-	        Meeting meeting=new Meeting();
-	        meeting.setId(rs.getLong("ID"));
-	        meeting.setPers1_fk(rs.getLong("PERS1_FK"));
-	        meeting.setPers2_fk(rs.getLong("PERS2_FK"));
-	        meeting.setUhrzeit(rs.getDate("UHRZEIT"));
-	        meeting.setLokalitaet_fk(rs.getLong("LOKALITAET_FK"));
-	        meeting.setOrt_fk(rs.getLong("ORT_FK"));
-	        meeting.setBewertung(rs.getInt("BEWERTUNG"));
-	        meeting.setVerkehrsmittel_pers1_fk(rs.getLong("VERKEHRSMITTEL_PERS1_FK"));
-	        meeting.setKommentar(rs.getString("KOMMENTAR"));
-	        meeting.setVerkehrsmittel_pers2_fk(rs.getLong("VERKEHRSMITTEL_PERS2_FK"));
-	        meeting.setaIdEmpfaenger(rs.getString("AID_EMPFAENGER"));
-	        meeting.setaIdSender(rs.getString("AID_SENDER"));
-	        return meeting;
-	    }
+		/*
+		 * implement abstract method for declaring mappingbetween POJO
+		 * attributes and relational table attributes
+		 */
+		public Meeting mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Meeting meeting = new Meeting();
+			meeting.setId(rs.getLong("ID"));
+			meeting.setPers1_fk(rs.getLong("PERS1_FK"));
+			meeting.setPers2_fk(rs.getLong("PERS2_FK"));
+			meeting.setUhrzeit(rs.getDate("UHRZEIT"));
+			meeting.setLokalitaet_fk(rs.getLong("LOKALITAET_FK"));
+			meeting.setOrt_fk(rs.getLong("ORT_FK"));
+			meeting.setBewertung(rs.getInt("BEWERTUNG"));
+			meeting.setVerkehrsmittel_pers1_fk(rs
+					.getLong("VERKEHRSMITTEL_PERS1_FK"));
+			meeting.setKommentar(rs.getString("KOMMENTAR"));
+			meeting.setVerkehrsmittel_pers2_fk(rs
+					.getLong("VERKEHRSMITTEL_PERS2_FK"));
+			meeting.setaIdEmpfaenger(rs.getString("AID_EMPFAENGER"));
+			meeting.setaIdSender(rs.getString("AID_SENDER"));
+			return meeting;
+		}
 	}
-	
+
 	DataSource dataSource;
-	
+
 	@Autowired(required = true)
 	public void setDataSource(DataSource ds) {
 		dataSource = ds;
 	}
-	private JdbcTemplate jdbcTemplate;  
-	
+
+	private JdbcTemplate jdbcTemplate;
+
 	public MeetingDatabaseDao() {
 		try {
 			Class.forName(oracle.jdbc.driver.OracleDriver.class.getName());
@@ -62,54 +69,128 @@ public class MeetingDatabaseDao implements MeetingDao{
 			return;
 		}
 		DriverManagerDataSource source = new DriverManagerDataSource();
-		source.setDriverClassName(oracle.jdbc.driver.OracleDriver.class.getName());
+		source.setDriverClassName(oracle.jdbc.driver.OracleDriver.class
+				.getName());
 		source.setUrl(Constants.uri);
 		source.setUsername(Constants.user);
 		source.setPassword(Constants.password);
-		
+
 		dataSource = source;
 	}
 
 	@Override
 	public List<Meeting> selectAll() {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
-		
-		List<Meeting> list = select.query("select * from TREFFEN", new MeetingMapper());
-		Logger.getGlobal().fine("MeetingDao.selectAll(): " + list.size() + " Treffen gefunden.");
+
+		List<Meeting> list = select.query("select * from TREFFEN",
+				new MeetingMapper());
+		Logger.getGlobal()
+				.fine("MeetingDao.selectAll(): " + list.size()
+						+ " Treffen gefunden.");
 		return list;
 	}
 
 	@Override
 	public void create(Long pers1_fk, Long pers2_fk, Date uhrzeit,
 			Long lokalitaet_fk, Long ort_fk, int bewertung,
-			Long verkehrsmittel_pers1_fk, String kommentar, Long verkehrsmittel_pers2_fk, String aIdEmpfaenger, String aIdSender, String locationPers1, String locationPers2) {
+			Long verkehrsmittel_pers1_fk, String kommentar,
+			Long verkehrsmittel_pers2_fk, String aIdEmpfaenger,
+			String aIdSender, String locationPers1, String locationPers2) {
 		JdbcTemplate insert = new JdbcTemplate(dataSource);
 		insert.update(
 				"INSERT INTO TREFFEN (ID,PERS1_FK,PERS2_FK,UHRZEIT,LOKALITAET_FK,ORT_FK,BEWERTUNG,VERKEHRSMITTEL_PERS1_FK,KOMMENTAR, VERKEHRSMITTEL_PERS2_FK, AID_SENDER, AID_EMPFAENGER, LOCATION_PERS1, LOCATION_PERS2) VALUES(SEQUENCE_TREFFEN_PK.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-				new Object[] { pers1_fk, pers2_fk,uhrzeit,lokalitaet_fk,ort_fk,bewertung,verkehrsmittel_pers1_fk,kommentar,verkehrsmittel_pers2_fk, aIdEmpfaenger, aIdSender, locationPers1, locationPers2});
+				new Object[] { pers1_fk, pers2_fk, uhrzeit, lokalitaet_fk,
+						ort_fk, bewertung, verkehrsmittel_pers1_fk, kommentar,
+						verkehrsmittel_pers2_fk, aIdEmpfaenger, aIdSender,
+						locationPers1, locationPers2 });
 	}
 
 	@Override
 	public Meeting findMeetingById(Long id) {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
 
-		return (Meeting) select.queryForObject("Select * from TREFFEN where id=?", 
-				new Object[] { id },
-	            new MeetingMapper());
+		return (Meeting) select.queryForObject(
+				"Select * from TREFFEN where id=?", new Object[] { id },
+				new MeetingMapper());
 	}
 
 	@Override
 	public Meeting deleteById(Long id) {
 		JdbcTemplate delete = new JdbcTemplate(dataSource);
-		delete.update("Delete from TREFFEN where id=?", new Object[] {id});
+		delete.update("Delete from TREFFEN where id=?", new Object[] { id });
 		return null;
+	}
+
+	@Override
+	public List<Meeting> selectMeetingByPers1Fk(Long id) {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		return  select.query(
+				"Select * from TREFFEN where PERS1_FK=?", new Object[] { id },
+				new MeetingMapper());
+	}
+	@Override
+	public Meeting selectMeetingByPers1Fk_uhrzeit(Long id, int hours, int minutes) {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		List<Meeting> meetings = new ArrayList<Meeting>();
+		
+		Meeting meeting = new Meeting();
+		meetings = select.query(
+				"Select * from TREFFEN where PERS1_FK=?", new Object[] { id },
+				new MeetingMapper());
+		for(int i = 0; i < meetings.size(); ++i){
+			Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+			calendar.setTime(meetings.get(i).getUhrzeit());   // assigns calendar to given date 
+			int hour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
+			int minute = calendar.get(Calendar.MINUTE);
+		if(hour == hours && minute == minutes){
+			meeting = meetings.get(i);
+		}
+		}
+		return meeting;
+	}
+
+	@Override
+	public List<Meeting> selectMeetingByPers2Fk(Long id) {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		return  select.query(
+				"Select * from TREFFEN where PERS2_FK=?", new Object[] { id },
+				new MeetingMapper());
+	}
+	
+	@Override
+	public Meeting selectMeetingByPers2Fk_uhrzeit(Long id, int hours, int minutes) {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		List<Meeting> meetings = new ArrayList<Meeting>();
+		
+		Meeting meeting = new Meeting();
+		meetings = select.query(
+				"Select * from TREFFEN where PERS2_FK=?", new Object[] { id },
+				new MeetingMapper());
+		for(int i = 0; i < meetings.size(); ++i){
+			Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+			calendar.setTime(meetings.get(i).getUhrzeit());   // assigns calendar to given date 
+			int hour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
+			int minute = calendar.get(Calendar.MINUTE);
+		if(hour == hours && minute == minutes){
+			meeting = meetings.get(i);
+		}
+		}
+		return meeting;
 	}
 
 	@Override
 	public void updateMeeting(Meeting meeting) {
 		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update("update TREFFEN set PERS1_FK = ?,PERS2_FK = ?,UHRZEIT = ?,LOKALITAET_FK = ?,ORT_FK = ?,BEWERTUNG = ?,VERKEHRSMITTEL_PERS1_FK = ?, KOMMENTAR = ?, VERKEHRSMITTEL_PERS2_FK where id= ?", 
-				new Object[] {meeting.getPers1_fk(),meeting.getPers2_fk(),meeting.getUhrzeit(),meeting.getLokalitaet_fk(),meeting.getOrt_fk(),meeting.getBewertung(),meeting.getVerkehrsmittel_pers1_fk(),meeting.getKommentar(),meeting.getVerkehrsmittel_pers2_fk(),meeting.getId()});
+		update.update(
+				"update TREFFEN set PERS1_FK = ?,PERS2_FK = ?,UHRZEIT = ?,LOKALITAET_FK = ?,ORT_FK = ?,BEWERTUNG = ?,VERKEHRSMITTEL_PERS1_FK = ?, KOMMENTAR = ?, VERKEHRSMITTEL_PERS2_FK where id= ?",
+				new Object[] { meeting.getPers1_fk(), meeting.getPers2_fk(),
+						meeting.getUhrzeit(), meeting.getLokalitaet_fk(),
+						meeting.getOrt_fk(), meeting.getBewertung(),
+						meeting.getVerkehrsmittel_pers1_fk(),
+						meeting.getKommentar(),
+						meeting.getVerkehrsmittel_pers2_fk(), meeting.getId() });
 	}
+
+	
 
 }
